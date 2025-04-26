@@ -1,5 +1,6 @@
-.form-container  {
+.form-container {
   height: 860px;
   aspect-ratio: 44/95;
   box-shadow: 0px 0px 200px rgba(0, 0, 0, 0.325);
+  padding: 30px;
 }
