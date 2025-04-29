@@ -16,3 +16,7 @@ input {
 input::placeholder {
   color: #cfcfcf;
 }
+
+.error-text {
+  color: red;
+}

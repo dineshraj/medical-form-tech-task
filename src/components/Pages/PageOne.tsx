@@ -32,7 +32,7 @@ const PageOne = () => {
           data-testid="child-name-input"
           />
         {shouldShowErrorBasedOnLength(inputValue, NAME_MIN_LENGTH) && (
-          <p className="child-name-error-text">
+          <p className="error-text">
             {errorForThreeCharacters}
           </p>
         )}
