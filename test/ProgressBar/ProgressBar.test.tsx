@@ -8,11 +8,18 @@ describe('ProgressBar', () => {
     render(<ProgressBar sections={PROGRESS_BAR_COUNT} />);
 
     const progressBar = await screen.findByTestId('progress-bar');
-    const progressBarItems = await screen.findAllByTestId(
-      'progress-bar__item'
-    );
+    const progressBarItems = await screen.findAllByTestId('progress-bar__item');
 
     expect(progressBar).toBeInTheDocument();
     expect(progressBarItems).toHaveLength(4);
+  });
+
+  it('renders the first progress item in a different colour', async () => {
+    render(<ProgressBar sections={PROGRESS_BAR_COUNT} />);
+
+    const progressBarItems = await screen.findAllByTestId('progress-bar__item');
+    expect(progressBarItems[0]).toHaveStyle(
+      'background-color: rgb(118, 87, 191);'
+    );
   });
 });

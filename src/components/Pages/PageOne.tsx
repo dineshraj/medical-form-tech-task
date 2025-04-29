@@ -7,7 +7,6 @@ import '../../index.css';
 
 const NAME_MIN_LENGTH = 3;
 
-
 const PageOne = () => {
   const {
     register,

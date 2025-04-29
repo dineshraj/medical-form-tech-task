@@ -1,7 +1,7 @@
 import PageOne from './Pages/PageOne';
-import '../styles/Form.css';
+import '../styles/Page.css';
 
-const Form = () => {
+const Page = () => {
   return (
     <div className="page-container" data-testid="page-container">
       <PageOne />
@@ -9,4 +9,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default Page;

@@ -1,5 +1,8 @@
 import ProgressBarItem from './ProgressBarItem';
 import '../../styles/ProgressBar/ProgressBar.css';
+import colours from '../../colours';
+
+const { highlightedProgress } = colours;
 
 interface ProgressBarProps {
   sections: number;
@@ -8,7 +11,11 @@ interface ProgressBarProps {
 const ProgressBar = ({ sections }: ProgressBarProps) => {
   const items = [];
   for (let index = 0; index < sections; index++) {
-    items.push(<ProgressBarItem key={index} />);
+    if (index === 0) {
+      items.push(<ProgressBarItem key={index} color={highlightedProgress} />);
+    } else {
+      items.push(<ProgressBarItem key={index} />);
+    }
   }
 
   return (
