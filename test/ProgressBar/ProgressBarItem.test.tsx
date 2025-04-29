@@ -6,5 +6,6 @@ describe('ProgressBarItem', () => {
     render(<ProgressBarItem />);
     const progressBarItem = await screen.findByTestId('progress-bar__item');
     expect(progressBarItem).toBeInTheDocument();
+    expect(progressBarItem).toBeInTheDocument();
   });
 });

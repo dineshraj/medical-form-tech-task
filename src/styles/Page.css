@@ -1,0 +1,18 @@
+label {
+  color: #5b5b5b;
+  letter-spacing: 0px;
+  font-size: 12px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+input {
+  border: 1px solid #cfcfcf;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input::placeholder {
+  color: #cfcfcf;
+}

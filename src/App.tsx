@@ -1,14 +1,13 @@
 import './styles/App.css';
-import Form from './components/Form';
+import Form from './components/Page';
+import ProgressBar from './components/ProgressBar/ProgressBar';
 
 function App() {
-  // const [count, setCount] = useState(0);
-
   return (
-      <div id="app">
-        <Form />
-      </div>
-
+    <div className="container">
+      <ProgressBar sections={4} />
+      <Form />
+    </div>
   );
 }
 
