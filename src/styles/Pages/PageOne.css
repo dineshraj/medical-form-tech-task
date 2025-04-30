@@ -1,0 +1,24 @@
+.date-picker-wrapper {
+  position: relative;
+}
+
+.react-datepicker-wrapper {
+  display: block;
+}
+
+.react-datepicker__input-container .react-datepicker__calendar-icon {
+  position: absolute;
+  right: 0;
+  top: 12px;
+  font-size: 15px;
+  right: 5px;
+}
+
+.react-datepicker__view-calendar-icon input {
+  padding: 10px;
+  padding-left: 8px;
+}
+
+.react-datepicker__view-calendar-icon input::placeholder {
+  color: #cfcfcf;
+}

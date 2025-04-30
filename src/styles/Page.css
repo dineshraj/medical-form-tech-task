@@ -21,3 +21,7 @@ input::placeholder {
 .error-text {
   color: red;
 }
+
+label {
+  margin-top: 30px;
+}
