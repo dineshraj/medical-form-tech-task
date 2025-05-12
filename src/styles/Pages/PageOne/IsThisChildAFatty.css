@@ -1,0 +1,15 @@
+
+.fatty-value {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 10px;
+}
+
+.fatty-value > label {
+  flex-basis: 0;
+  flex-grow: 1;
+}
+
+.fatty-value select {
+  background-color: white;
+}

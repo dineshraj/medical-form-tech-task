@@ -12,8 +12,8 @@ body {
 #root {
   display: flex;
   justify-content: center;
-  align-items: center;
   height: 100%;
+  align-items: center;
 }
 
 h1 {
@@ -22,6 +22,7 @@ h1 {
   font-weight: 300;
   margin: 0;
   margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 .error-text {

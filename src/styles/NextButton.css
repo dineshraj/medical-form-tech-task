@@ -1,0 +1,10 @@
+.next-button {
+  border: none;
+  margin-top: 15px;
+  padding: 15px;
+}
+
+
+.next-button:disabled {
+  color: rgb(178, 178, 178);
+}

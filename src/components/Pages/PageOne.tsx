@@ -1,47 +1,86 @@
-import { useForm } from 'react-hook-form';
-import { pageOne, errorForThreeCharacters } from '../../lang';
-import DatePicker from 'react-datepicker';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+import ChildName from './PageOne/ChildName';
+import DateOfBirth from './PageOne/DateOfBirth';
+import AgeCheck from './PageOne/AgeCheck';
+import IsThisChildAFatty from './PageOne/IsThisChildAFatty';
+import IsThisChildADwarf from './PageOne/IsThisChildADwarf';
+import Email from './PageOne/Email';
+import PhoneNumber from './PageOne/PhoneNumber';
+import NextButton from './NextButton';
+import BackButton from './BackButton';
+import {
+  errorForEmail,
+  errorForNumbers,
+  errorForThreeCharacters,
+  pageOne
+} from '../../lib/lang';
+
 import 'react-datepicker/dist/react-datepicker.css';
-import '../../styles/Pages/PageOne.css';
-
-import { shouldShowErrorBasedOnLength } from '../../helpers/formValidation';
-
-import '../../index.css';
-import ChildName from './components/ChildName';
-
-const NAME_MIN_LENGTH = 3;
+import { NAME_MIN_LENGTH } from '../../constants';
 
 const PageOne = () => {
-  const { register, watch } = useForm({
-    mode: 'onChange' // validate on every change
-  });
-  const [startDate, setStartDate] = useState<Date | null>(new Date());
-  const inputValue = watch('name', '');
+  const [selectedDate, setSelectedtDate] = useState<Date | null>(null);
+
+  const {
+    register,
+    // watch,
+    formState: { errors }
+  } = useForm({ mode: 'onChange' });
+
+  // watch('name');
+  // watch('weight');
+  // watch('height');
 
   return (
     <>
       <h1>{pageOne.title}</h1>
       <form className="form" data-testid="page-one-form">
+        <BackButton page={1} />
         <ChildName
-          registered={register('name', { required: true, minLength: 3 })}
-          errorCondition={shouldShowErrorBasedOnLength(
-            inputValue,
-            NAME_MIN_LENGTH
-          )}
+          registered={register('name', {
+            required: true,
+            minLength: {
+              value: NAME_MIN_LENGTH,
+              message: errorForThreeCharacters
+            }
+          })}
+          errors={errors}
         />
-        <label htmlFor="dob" data-testid="date-of-birth-label">
-          {pageOne.childsDob}
-          <DatePicker
-            selected={startDate}
-            placeholderText={startDate?.toDateString()}
-            onChange={(date) => setStartDate(date)}
-            dateFormat="MMMM do YYYY"
-            id="dob"
-            showIcon={true}
-            data-testid="date-of-birth-input"
-          />
-        </label>
+        <DateOfBirth
+          updatedDate={selectedDate}
+          handleOnChange={(date) => setSelectedtDate(date)}
+        />
+        <AgeCheck />
+        <IsThisChildAFatty
+          registered={register('weight', {
+            required: true,
+            valueAsNumber: true,
+            validate: (value) => /^\d+$/.test(value) || errorForNumbers
+          })}
+          errors={errors}
+        />
+        <IsThisChildADwarf
+          registered={register('height', {
+            required: true,
+            valueAsNumber: true,
+            validate: (value) => /^\d+$/.test(value) || errorForNumbers
+          })}
+          errors={errors}
+        />
+        <Email
+          registered={register('email', {
+            required: true,
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: errorForEmail
+            }
+          })}
+          errors={errors}
+        />
+        <PhoneNumber />
+        <NextButton />
       </form>
     </>
   );

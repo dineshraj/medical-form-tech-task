@@ -1,12 +1,15 @@
+
+
+
 import './styles/App.css';
-import Form from './components/Page';
+import Pages from './components/Pages';
 import ProgressBar from './components/ProgressBar/ProgressBar';
 
 function App() {
   return (
     <div className="container">
       <ProgressBar sections={4} />
-      <Form />
+      <Pages />
     </div>
   );
 }
