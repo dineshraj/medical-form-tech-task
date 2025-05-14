@@ -12,7 +12,7 @@ const AgeCheck = () => {
         <input
           type="radio"
           data-testid="age-check-no"
-          name="age-check"
+          name="ageCheck"
           className="age-check-input"
           defaultChecked
         />
@@ -23,7 +23,7 @@ const AgeCheck = () => {
           type="radio"
           data-testid="age-check-yes"
           className="age-check-input"
-          name="age-check"
+          name="ageCheck"
         />
         Yes
       </label>

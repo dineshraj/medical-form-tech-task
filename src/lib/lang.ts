@@ -15,4 +15,7 @@ export const next = 'Next';
 export const back = 'Back';
 export const errorForThreeCharacters = 'Please enter at least three characters';
 export const errorForNumbers = 'Please only enter a numeric value';
+export const errorForDate = 'Date must be in the past';
 export const errorForEmail = 'Please only enter a valid email';
+export const errorForName = 'Unless you are Elon, enter goddamn letters';
+export const errorForPhone = 'That is not a phone number';

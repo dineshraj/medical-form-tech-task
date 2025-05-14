@@ -5,7 +5,10 @@ import {
   errorForThreeCharacters,
   errorForNumbers,
   pageOne,
-  errorForEmail
+  errorForEmail,
+  errorForName,
+  errorForPhone,
+  errorForDate
 } from '../../../src/lib/lang';
 
 describe('PageOne', () => {
@@ -46,6 +49,22 @@ describe('PageOne', () => {
       )) as HTMLInputElement;
 
       expect(nameInput).toBeInTheDocument();
+    });
+
+    it('shows error message when a number is entered', async () => {
+      const user = userEvent.setup();
+
+      render(<PageOne />);
+
+      const nameInput = (await screen.findByTestId(
+        'child-name-input'
+      )) as HTMLInputElement;
+
+      await user.type(nameInput, '3po');
+      const childsNameLabel = await screen.findByTestId('child-name-label');
+
+      expect(nameInput.value).toBe('3po');
+      expect(childsNameLabel).toHaveTextContent(errorForName);
     });
 
     it('shows error message when not enough characters are entered', async () => {
@@ -91,12 +110,36 @@ describe('PageOne', () => {
 
     it('renders the date picker library', async () => {
       render(<PageOne />);
-      const datePickerInitialValue = await screen.findByTestId(
-        'date-of-birth-label'
+      const datePickerLabel = await screen.findByTestId('date-of-birth-label');
+
+      const datePicker = within(datePickerLabel).queryByPlaceholderText(
+        'Click to select a date'
       );
 
-      expect(datePickerInitialValue).toBeInTheDocument();
+      expect(datePicker).toBeInTheDocument();
     });
+
+    it.skip('shows error message when a future is entered', async () => {
+      const user = userEvent.setup();
+
+      render(<PageOne />);
+
+      const dateLabel = await screen.findByTestId('date-of-birth-label');
+      const dateInput = within(dateLabel).getByPlaceholderText(
+        'Click to select a date'
+      ) as HTMLInputElement;
+
+      // const today = new Date();
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+
+      dateInput.value = tomorrow.toString();
+
+      await user.type(dateInput, tomorrow.toString());
+
+      expect(dateLabel).toHaveTextContent(errorForDate);
+    });
+
   });
 
   describe('Age check', () => {
@@ -303,6 +346,23 @@ describe('PageOne', () => {
       expect(emailLabel).not.toHaveTextContent(errorForEmail);
     });
 
+    it('does not show an error message when a valid email is entered', async () => {
+      const user = userEvent.setup();
+
+      render(<PageOne />);
+
+      const emailInput = (await screen.findByTestId(
+        'enter-your-email-input'
+      )) as HTMLInputElement;
+
+      await user.type(emailInput, 'poo@toilet.room');
+
+      const emailLabel = await screen.findByTestId('enter-your-email');
+
+      expect(emailInput.value).toBe('poo@toilet.room');
+      expect(emailLabel).not.toHaveTextContent(errorForEmail);
+    });
+
     it('shows error message when an invalid email is entered', async () => {
       const user = userEvent.setup();
 
@@ -349,19 +409,84 @@ describe('PageOne', () => {
       render(<PageOne />);
 
       const phoneNumberLabel = await screen.findByTestId('phone-number-label');
+      // lots of options so get them all and select the first one
       const options = within(phoneNumberLabel).getAllByRole('option');
 
       expect(options[0]).toBeInTheDocument();
     });
+
+    it('does not show an error message with nothing is entered', async () => {
+      render(<PageOne />);
+
+      const phoneNumberLabel = await screen.findByTestId('phone-number-label');
+
+      expect(phoneNumberLabel).not.toHaveTextContent(errorForPhone);
+    });
+
+    it('shows error message when a non-valid phone number is entered', async () => {
+      const user = userEvent.setup();
+
+      render(<PageOne />);
+
+      const phoneNumberLabel = await screen.findByTestId('phone-number-label');
+      const phoneNumberInput = within(phoneNumberLabel).getByPlaceholderText(
+        'Enter phone number'
+      ) as HTMLInputElement;
+
+      await user.type(phoneNumberInput, '1');
+
+      expect(phoneNumberInput.value).toBe('+44 1');
+      expect(phoneNumberLabel).toHaveTextContent(errorForPhone);
+    });
   });
 
   describe('Next button', () => {
-    it('renders the next button', async () => {
+    it('renders the next button as disabled by default', async () => {
       render(<PageOne />);
 
-      const nextButton = await screen.findByTestId('next-button');
+      const nextButton = await screen.findByTestId('next-button-page-1');
 
       expect(nextButton).toBeInTheDocument();
+      expect(nextButton).toBeDisabled();
+    });
+
+    it('renders the next button as active when the correct values are entered for all required fields', async () => {
+      const user = userEvent.setup();
+      render(<PageOne />);
+
+      // child name
+      const nameInput = (await screen.findByTestId(
+        'child-name-input'
+      )) as HTMLInputElement;
+
+      await user.type(nameInput, 'anakin');
+
+      // dob
+      const datePickerLabel = await screen.findByTestId('date-of-birth-label');
+      const datePicker = within(datePickerLabel).queryByPlaceholderText(
+        'Click to select a date'
+      );
+      datePicker?.setAttribute('value', 'May 4th 2025');
+
+      // email
+      const emailInput = (await screen.findByTestId(
+        'enter-your-email-input'
+      )) as HTMLInputElement;
+
+      await user.type(emailInput, 'poo@toilet.room');
+
+      // phone
+      const phoneNumberLabel = await screen.findByTestId('phone-number-label');
+      const phoneNumberInput =
+        within(phoneNumberLabel).getByPlaceholderText('Enter phone number');
+
+      await user.type(phoneNumberInput, '79054356793');
+
+      //next button
+      const nextButton = await screen.findByTestId('next-button-page-1');
+
+      expect(nextButton).toBeInTheDocument();
+      expect(nextButton).not.toBeDisabled();
     });
   });
 });

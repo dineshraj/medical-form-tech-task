@@ -1,9 +1,7 @@
 import PageOne from './Pages/PageOne';
-import '../styles/Page.css';
+import '../styles/Pages.css';
 
 const Page = () => {
-  // const [page, setPage] = useState(1);
-
   return (
     <div className="page-container" data-testid="page-container">
       <PageOne />
