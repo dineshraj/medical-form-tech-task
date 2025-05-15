@@ -1,9 +1,13 @@
-import { useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import {
+  Controller,
+  SubmitHandler,
+  useForm,
+  useFormState
+} from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
-import validPhoneNumber from 'libphonenumber-js';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
 import ChildName from './PageOne/ChildName';
 import DateOfBirth from './PageOne/DateOfBirth';
@@ -15,6 +19,7 @@ import PhoneNumber from './PageOne/PhoneNumber';
 import NextButton from './NextButton';
 import BackButton from './BackButton';
 import {
+  errorForAge,
   errorForDate,
   errorForEmail,
   errorForName,
@@ -25,7 +30,9 @@ import {
 } from '../../lib/lang';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import { parsePhoneNumber } from 'libphonenumber-js/core';
+import { useEffect } from 'react';
+
+// TODO get the unit working when you enter a height, but does not send if not
 
 /* 
   STRATEGY
@@ -41,98 +48,149 @@ const PageOneSchema = z.object({
     .string()
     .min(3, errorForThreeCharacters)
     .refine((value) => /^[A-Za-z]+$/.test(value), { message: errorForName }),
-  dob: z.coerce.date().refine(
-    (date) => {
-      return date <= new Date();
-    },
-    { message: errorForDate }
-  ),
-  ageCheck: z.boolean(),
+  dob: z.coerce
+    .date()
+    .refine((date) => date <= new Date(), { message: errorForDate }),
+  ageCheck: z.string({ message: errorForAge }),
   weight: z.coerce
     .number({
       invalid_type_error: errorForNumbers
     })
     .optional(),
-
-  weightUnit: z.string().optional(),
+  weightUnit: z.union([z.string(), z.literal('kg')]),
   height: z.coerce
     .number({
       invalid_type_error: errorForNumbers
     })
     .optional(),
-  // .refine((value) => value && typeof value !== 'number', {
-  //   message: errorForNumbers
-  // }),
-  heightUnit: z.string().optional(),
+  heightUnit: z.union([z.string(), z.literal('cm')]),
   email: z.string().email(errorForEmail),
-  phone: z
+  phone: z.coerce
     .string()
-    .nullable()
     .transform((val) => val ?? '')
-    .refine((value) => validPhoneNumber(value), { message: errorForPhone })
+    .refine(
+      (value) => {
+        try {
+          return parsePhoneNumberFromString(value)?.isValid();
+        } catch {
+          return false;
+        }
+      },
+      { message: errorForPhone }
+    )
 });
+
+// const defaultPageOne: PageOne = {
+//   name: '',
+//   dob: new Date('January 17, 1988'),
+//   ageCheck: false,
+//   weight: undefined,
+//   weightUnit: undefined,
+//   height: undefined,
+//   heightUnit: undefined,
+//   email: '',
+//   phone: ''
+// };
 
 export type PageOne = z.infer<typeof PageOneSchema>;
 
 const PageOne = () => {
-  // const [selectedDate, setSelectedtDate] = useState<Date | null>(null);
-  const [pageState, setPageState] = useState<PageOne | null>(null);
-  const [pageFilled, setPageFilled] = useState(false);
+  // const [pageState, setPageState] = useState<PageOne>(defaultPageOne);
+  // const [pageFilled, setPageFilled] = useState(false);
 
-  // useEffect(() => {}, [pageState]);
+  // useEffect(() => {
+  //   // console.log('pageState', pageState);
+  // }, [pageState]);
 
-  const {
-    register,
-    control,
-    formState: { errors }
-  } = useForm<PageOne>({
+  const { register, control, trigger, handleSubmit } = useForm({
     mode: 'onChange',
     resolver: zodResolver(PageOneSchema)
   });
 
-  // const checkIfPageIsFilled = () => {
-  //   return false;
-  // };
+  useEffect(() => {
+    trigger(); // triggers validation for all fields
+  }, []);
 
-  // const updatePageState = ({ target }: { target: HTMLInputElement }) => {
-  //   console.log('trying...');
-  //   console.log('🚀 ~ updatePageState ~ errors:', errors);
-  //   const { name, value } = target;
-  //   if (errors[name]?.message) return;
+  const { errors, isValid: formValid } = useFormState({ control });
+  console.log('🚀 ~ PageOne ~ formValid:', formValid);
+  console.log('🚀 ~ PageOne ~ errors:', errors);
+
+  // const updatePageState = async ({ target }: { target: HTMLInputElement }) => {
+  //   const fieldName = target.name as keyof PageOne;
+  //   // Trigger validation for the specific field
+  //   const isValid = await trigger(fieldName);
+
+  //   // TODO here I'll need to remove the entry if goes back into an error state
+  //   if (errrs[fieldname.messgae]) return;
+
+  //   const { value } = target;
 
   //   setPageState((prevState) => {
+
+
   //     return {
   //       ...prevState,
-  //       [name]: value
+  //       [fieldName]: value
   //     };
   //   });
   // };
 
-  console.log('🚀 ~ PageOne ~ errors:', errors);
+  // console.log('🚀 ~ PageOne ~ errors:', errors);
+
+  const onSubmit: SubmitHandler<PageOne> = async (data) => {
+    console.log('data', data);
+  };
+
   return (
     <>
       <h1>{pageOne.title}</h1>
-      <form className="form" data-testid="page-one-form">
+      <form
+        className="form"
+        data-testid="page-one-form"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <BackButton page={1} />
-        <ChildName registered={register('name')} errors={errors} />
+        <ChildName
+          registered={register('name', {
+            // onChange: updatePageState
+          })}
+          errors={errors}
+        />
         <Controller
           name="dob"
           control={control}
           render={({ field }) => {
-            return <DateOfBirth {...field} error={errors['dob']} />;
+            return (
+              <DateOfBirth
+                {...field}
+                // onChange={(date: Date | null) => {
+                //   field.onChange(date); // react hook form onChange
+                //   updatePageState({
+                //     target: {
+                //       name: field.name,
+                //       value: date
+                //     }
+                //   })
+                // }}
+                error={errors['dob']}
+              />
+            );
           }}
         />
-        <AgeCheck />
-        <IsThisChildAFatty registered={register('weight')} errors={errors} />
-        <IsThisChildADwarf registered={register('height')} errors={errors} />
+        <AgeCheck registered={register('ageCheck')} errors={errors} />
+        <IsThisChildAFatty registered={register('weight')} unitRegistered={register('weightUnit')} errors={errors} />
+        <IsThisChildADwarf registered={register('height')}  unitRegistered={register('heightUnit')} errors={errors} />
         <Email
-          registered={register('email', {
-            required: true,
-            pattern: {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-              message: errorForEmail
-            }
-          })}
+          registered={register(
+            'email'
+            //   {
+            //   required: true,
+            //   pattern: {
+            //     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            //     message: errorForEmail
+            //   }
+            // }
+          )}
           errors={errors}
         />
         <Controller
@@ -148,7 +206,7 @@ const PageOne = () => {
             );
           }}
         />
-        <NextButton disabled={!pageFilled} page={1} />
+        <NextButton disabled={!formValid} page={1} />
       </form>
     </>
   );

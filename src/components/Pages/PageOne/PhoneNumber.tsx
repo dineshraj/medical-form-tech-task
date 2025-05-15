@@ -9,12 +9,12 @@ import { PageOne } from '../PageOne';
 interface PhoneNumberProps {
   onChange: (value: number | undefined) => void;
   value: string | undefined;
-  error: FieldValues;
-  control: Control<PageOne>
+  error: FieldValues | undefined;
+  onBlur: () => void;
+  control: Control<PageOne>;
 }
 
-const PhoneNumber = ({value, onChange, error, control}: PhoneNumberProps) => {
-  console.log("🚀 ~ PhoneNumber ~ error:", error)
+const PhoneNumber = ({ value, onChange, error, onBlur, control }: PhoneNumberProps) => {
   const errorMessage = error?.message || null;
 
   return (
@@ -25,6 +25,7 @@ const PhoneNumber = ({value, onChange, error, control}: PhoneNumberProps) => {
         placeholder="Enter phone number"
         international
         control={control}
+        onBlur={onBlur}
         defaultCountry="GB"
         value={value}
         onChange={onChange}

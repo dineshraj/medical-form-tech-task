@@ -9,10 +9,15 @@ import {
 
 interface IsThisChildAFattyNameProps {
   registered: UseFormRegisterReturn<'weight'>;
+  unitRegistered: UseFormRegisterReturn<'weightUnit'>;
   errors: FieldErrors<FieldValues>;
 }
 
-const IsThisChildAFatty = ({registered, errors}: IsThisChildAFattyNameProps) => {
+const IsThisChildAFatty = ({
+  registered,
+  unitRegistered,
+  errors
+}: IsThisChildAFattyNameProps) => {
   // const {
   //   register,
   //   watch,
@@ -45,9 +50,11 @@ const IsThisChildAFatty = ({registered, errors}: IsThisChildAFattyNameProps) => 
         <label htmlFor="unit" data-testid="how-fat-is-the-child-unit-label">
           <div className="title">{pageOne.weightUnit}</div>
           <select
+            {...unitRegistered}
             data-testid="how-fat-is-the-child-unit"
             id="unit"
             defaultValue="kg"
+            name="weighunit"
           >
             <option value="kg">kg</option>
             <option value="lb">lb</option>

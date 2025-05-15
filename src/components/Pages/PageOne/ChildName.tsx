@@ -1,3 +1,4 @@
+
 import { pageOne } from '../../../lib/lang';
 import {
   FieldErrors,
@@ -11,19 +12,20 @@ interface ChildNameProps {
 }
 
 const ChildName = ({ registered, errors }: ChildNameProps) => {
-  const error = errors.name?.message as string;
+  const errorMessage = errors['name']?.message as string;
 
   return (
     <label htmlFor="name" data-testid="child-name-label">
       <div className="title">{pageOne.childsName}</div>
       <input
         {...registered}
-        className={error ? 'error-border' : ''}
+        name="name"
+        className={errorMessage ? 'error-border' : ''}
         placeholder="Alice"
         id="name"
         data-testid="child-name-input"
       />
-      {error && <p className="error-text">{error}</p>}
+      {errorMessage && <p className="error-text">{errorMessage}</p>}
     </label>
   );
 };

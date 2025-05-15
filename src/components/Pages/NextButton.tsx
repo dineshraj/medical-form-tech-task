@@ -12,6 +12,7 @@ const NextButton = ({ disabled, page }: NextButtonProps) => {
     <button
       className="next-button"
       disabled={disabled}
+      type="submit"
       data-testid={`next-button-page-${page}`}
     >
       {next}

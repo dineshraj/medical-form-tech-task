@@ -1,6 +1,3 @@
-
-
-
 import './styles/App.css';
 import Pages from './components/Pages';
 import ProgressBar from './components/ProgressBar/ProgressBar';
@@ -15,3 +12,5 @@ function App() {
 }
 
 export default App;
+
+
