@@ -129,7 +129,6 @@ describe('PageOne', () => {
         'Click to select a date'
       ) as HTMLInputElement;
 
-      // const today = new Date();
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
 

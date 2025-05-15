@@ -18,21 +18,7 @@ const IsThisChildAFatty = ({
   unitRegistered,
   errors
 }: IsThisChildAFattyNameProps) => {
-  // const {
-  //   register,
-  //   watch,
-  //   formState: { errors }
-  // } = useForm({
-  //   mode: 'onChange'
-  // });
 
-  // const registered = register('weight', {
-  //   required: true,
-  //   valueAsNumber: true,
-  //   validate: (value) => /^\d+$/.test(value) || errorForNumbers
-  // });
-
-  // watch('weight');
   const error = errors.weight?.message as string;
 
   return (

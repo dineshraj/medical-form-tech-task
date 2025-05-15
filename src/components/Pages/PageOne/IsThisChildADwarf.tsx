@@ -19,25 +19,7 @@ const IsThisChildADwarf = ({
   unitRegistered,
   errors
 }: IsThisChildADwarfNameProps) => {
-  // const {
-  //   register,
-  //   watch,
-  //   formState: { errors }
-  // } = useForm({
-  //   mode: 'onChange'
-  // });
 
-  // const HEIGHT_MAX_LENGTH = 2;
-  // const registered = register('height', {
-  //   required: true,
-  // valueAsNumber: true,
-  //   maxLength: {
-  //     value: HEIGHT_MAX_LENGTH,
-  //     message: errorForNumbers
-  //   }
-  // });
-
-  // watch('height');
   const error = errors.height?.message as string;
 
   return (

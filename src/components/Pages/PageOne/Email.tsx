@@ -7,23 +7,6 @@ interface EmailProps {
 }
 
 const Email = ({ registered, errors}: EmailProps) => {
-  // const {
-  //   register,
-  //   watch,
-  //   formState: { errors }
-  // } = useForm({
-  //   mode: 'onChange'
-  // });
-
-  // const registered = register('email', {
-  //   required: true,
-  //   pattern: {
-  //     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-  //     message: errorForEmail
-  //   }
-  // });
-
-  // watch('email');
   const error = errors.email?.message as string;
 
   return (

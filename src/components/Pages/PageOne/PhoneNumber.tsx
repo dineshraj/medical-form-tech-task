@@ -1,7 +1,7 @@
 import PhoneInputWithCountry from 'react-phone-number-input/react-hook-form';
 
 import 'react-phone-number-input/style.css';
-import '../../../styles/Pages//PageOne/PhoneNumber.css';
+import '../../../styles/Pages/PageOne/PhoneNumber.css';
 import { pageOne } from '../../../lib/lang';
 import { Control, FieldValues } from 'react-hook-form';
 import { PageOne } from '../PageOne';
