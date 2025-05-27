@@ -2,9 +2,15 @@
   border: none;
   margin-top: 15px;
   padding: 15px;
+  border-radius: 5px;
+  background-color: #7657bf;
+  color: white;
+  cursor: pointer;
 }
 
 
 .next-button:disabled {
   color: rgb(178, 178, 178);
+  background-color: #f2f2f2;
+  cursor: default;
 }

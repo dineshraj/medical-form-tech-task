@@ -1,5 +1,5 @@
 import DatePicker from 'react-datepicker';
-import { pageOne } from '../../../lib/lang';
+import { datePlaceholderText, pageOne } from '../../../lib/lang';
 import '../../../styles/Pages/PageOne/DateOfBirth.css';
 import { FieldValues } from 'react-hook-form';
 
@@ -19,7 +19,7 @@ const DateOfBirth = ({ value, onChange, error }: DateOfBirthProps) => {
         wrapperClassName="date-picker"
         className={errorMessage ? 'error-border' : ''}
         selected={value}
-        placeholderText="Click to select a date"
+        placeholderText={datePlaceholderText}
         onChange={onChange}
         dateFormat="MMMM do YYYY"
         id="dob"

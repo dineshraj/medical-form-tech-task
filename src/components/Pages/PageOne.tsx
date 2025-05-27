@@ -31,6 +31,7 @@ import {
 
 import 'react-datepicker/dist/react-datepicker.css';
 import { useEffect } from 'react';
+import { updateLocalStorage } from '../../lib/localStorage';
 
 // TODO get the unit working when you enter a height, but does not send if not
 
@@ -74,19 +75,32 @@ const PageOneSchema = z.object({
 export type PageOne = z.infer<typeof PageOneSchema>;
 
 const PageOne = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { register, control, trigger, handleSubmit } = useForm({
     mode: 'onChange',
     resolver: zodResolver(PageOneSchema)
   });
 
   useEffect(() => {
-    trigger(); // triggers validation for all fields //TODO remove when debugging is done
+    // * triggers validation for all fields in react-form-hook
+    //TODO remove when debugging is done
+    // trigger();
   }, []);
 
   const { errors, isValid: formValid } = useFormState({ control });
 
   const onSubmit: SubmitHandler<PageOne> = async (data) => {
-    console.log('data', data);
+    const { weight, weightUnit, height, heightUnit } = data;
+
+    const updatedData = {
+        ...data,
+        weight: weight === 0 ? undefined : weight,
+        weightUnit: weight === 0 ? undefined : weightUnit,
+        height: height === 0 ? undefined : height,
+        heightUnit: height === 0 ? undefined : heightUnit
+    };
+
+    updateLocalStorage(updatedData);
   };
 
   return (
@@ -98,32 +112,26 @@ const PageOne = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <BackButton page={1} />
-        <ChildName
-          registered={register('name', {
-          })}
-          errors={errors}
-        />
+        <ChildName registered={register('name')} errors={errors} />
         <Controller
           name="dob"
           control={control}
           render={({ field }) => {
-            return (
-              <DateOfBirth
-                {...field}
-                error={errors['dob']}
-              />
-            );
+            return <DateOfBirth {...field} error={errors['dob']} />;
           }}
         />
         <AgeCheck registered={register('ageCheck')} errors={errors} />
-        <IsThisChildAFatty registered={register('weight')} unitRegistered={register('weightUnit')} errors={errors} />
-        <IsThisChildADwarf registered={register('height')}  unitRegistered={register('heightUnit')} errors={errors} />
-        <Email
-          registered={register(
-            'email'
-          )}
+        <IsThisChildAFatty
+          registered={register('weight')}
+          unitRegistered={register('weightUnit')}
           errors={errors}
         />
+        <IsThisChildADwarf
+          registered={register('height')}
+          unitRegistered={register('heightUnit')}
+          errors={errors}
+        />
+        <Email registered={register('email')} errors={errors} />
         <Controller
           name="phone"
           control={control}

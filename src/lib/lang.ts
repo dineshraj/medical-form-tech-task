@@ -1,3 +1,5 @@
+export const appName = 'medicalData'
+
 export const pageOne = {
   title:
     'Get your questions answered by our consultants from the comfort of your home',
@@ -20,3 +22,4 @@ export const errorForDate = 'Date must be in the past';
 export const errorForEmail = 'Please enter a valid email';
 export const errorForName = 'Unless you are Elon, enter goddamn letters';
 export const errorForPhone = 'That is not a phone number';
+export const datePlaceholderText = 'Click to select a date';

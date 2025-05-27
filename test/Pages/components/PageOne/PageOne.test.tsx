@@ -1,6 +1,6 @@
-import userEvent from '@testing-library/user-event';
+import userEvent, { UserEvent } from '@testing-library/user-event';
 import { render, screen, within } from '@testing-library/react';
-import PageOne from '../../../src/components/Pages/PageOne';
+import PageOne from '../../../../src/components/Pages/PageOne';
 import {
   errorForThreeCharacters,
   errorForNumbers,
@@ -8,8 +8,67 @@ import {
   errorForEmail,
   errorForName,
   errorForPhone,
-  errorForDate
-} from '../../../src/lib/lang';
+  errorForDate,
+  datePlaceholderText,
+  appName
+} from '../../../../src/lib/lang';
+
+const fillInFormCorrectly = async (
+  user: UserEvent,
+  { height, weight }: { height: boolean; weight: boolean } = {
+    height: false,
+    weight: false
+  }
+) => {
+  // child name
+  const nameInput = (await screen.findByTestId(
+    'child-name-input'
+  )) as HTMLInputElement;
+
+  await user.type(nameInput, 'anakin');
+
+  // dob
+  const datePickerLabel = await screen.findByTestId('date-of-birth-label');
+  const datePicker = within(datePickerLabel).queryByPlaceholderText(
+    datePlaceholderText
+  ) as unknown as HTMLElement;
+
+  await user.click(datePicker);
+  //TODO this is brittle if other options are on the page in the future
+  await user.click(screen.getAllByRole('option')[0]);
+
+  // age check
+  const ageCheckRadioButton = screen.getByTestId('age-check-no');
+  await user.click(ageCheckRadioButton);
+
+  // height
+  if (height) {
+    const heightInput = await screen.getByTestId(
+      'how-stumpy-is-the-child-input'
+    );
+    await user.type(heightInput, '90');
+  }
+
+  // weight
+  if (weight) {
+    const weightInput = await screen.getByTestId('how-fat-is-the-child-input');
+    await user.type(weightInput, '34');
+  }
+
+  // email
+  const emailInput = (await screen.findByTestId(
+    'enter-your-email-input'
+  )) as HTMLInputElement;
+
+  await user.type(emailInput, 'poo@toilet.room');
+
+  // phone
+  const phoneNumberLabel = await screen.findByTestId('phone-number-label');
+  const phoneNumberInput =
+    within(phoneNumberLabel).getByPlaceholderText('Enter phone number');
+
+  await user.type(phoneNumberInput, '7906322752');
+};
 
 describe('PageOne', () => {
   describe('Back button', () => {
@@ -112,9 +171,8 @@ describe('PageOne', () => {
       render(<PageOne />);
       const datePickerLabel = await screen.findByTestId('date-of-birth-label');
 
-      const datePicker = within(datePickerLabel).queryByPlaceholderText(
-        'Click to select a date'
-      );
+      const datePicker =
+        within(datePickerLabel).queryByPlaceholderText(datePlaceholderText);
 
       expect(datePicker).toBeInTheDocument();
     });
@@ -126,7 +184,7 @@ describe('PageOne', () => {
 
       const dateLabel = await screen.findByTestId('date-of-birth-label');
       const dateInput = within(dateLabel).getByPlaceholderText(
-        'Click to select a date'
+        datePlaceholderText
       ) as HTMLInputElement;
 
       const tomorrow = new Date();
@@ -138,7 +196,6 @@ describe('PageOne', () => {
 
       expect(dateLabel).toHaveTextContent(errorForDate);
     });
-
   });
 
   describe('Age check', () => {
@@ -452,40 +509,70 @@ describe('PageOne', () => {
     it('renders the next button as active when the correct values are entered for all required fields', async () => {
       const user = userEvent.setup();
       render(<PageOne />);
+      await fillInFormCorrectly(user);
 
-      // child name
-      const nameInput = (await screen.findByTestId(
-        'child-name-input'
-      )) as HTMLInputElement;
-
-      await user.type(nameInput, 'anakin');
-
-      // dob
-      const datePickerLabel = await screen.findByTestId('date-of-birth-label');
-      const datePicker = within(datePickerLabel).queryByPlaceholderText(
-        'Click to select a date'
-      );
-      datePicker?.setAttribute('value', 'May 4th 2025');
-
-      // email
-      const emailInput = (await screen.findByTestId(
-        'enter-your-email-input'
-      )) as HTMLInputElement;
-
-      await user.type(emailInput, 'poo@toilet.room');
-
-      // phone
-      const phoneNumberLabel = await screen.findByTestId('phone-number-label');
-      const phoneNumberInput =
-        within(phoneNumberLabel).getByPlaceholderText('Enter phone number');
-
-      await user.type(phoneNumberInput, '79054356793');
-
-      //next button
       const nextButton = await screen.findByTestId('next-button-page-1');
 
       expect(nextButton).toBeInTheDocument();
       expect(nextButton).not.toBeDisabled();
+    });
+  });
+
+  describe('Local storage', () => {
+    it('Adds data to local storage when the form is submitted but does not include empty fields', async () => {
+      const user = userEvent.setup();
+      render(<PageOne />);
+      await fillInFormCorrectly(user);
+
+      const nextButton = await screen.findByTestId('next-button-page-1');
+
+      expect(nextButton).toBeInTheDocument();
+
+      await user.click(nextButton);
+
+      //TODO don't hardcode these
+      const expectedData = {
+        name: 'anakin',
+        dob: '2025-04-26T23:00:00.000Z',
+        ageCheck: 'false',
+        email: 'poo@toilet.room',
+        phone: '+447906322752'
+      };
+
+      expect(localStorage.setItem).toHaveBeenCalledWith(
+        'medicalData',
+        JSON.stringify(expectedData)
+      );
+    });
+
+    it('Adds data to local storage when the form is submitted with all fields', async () => {
+      const user = userEvent.setup();
+      render(<PageOne />);
+      await fillInFormCorrectly(user, { height: true, weight: true });
+
+      const nextButton = await screen.findByTestId('next-button-page-1');
+
+      expect(nextButton).toBeInTheDocument();
+
+      await user.click(nextButton);
+
+      //TODO don't hardcode these
+      const expectedData = {
+        name: 'anakin',
+        dob: '2025-04-26T23:00:00.000Z',
+        ageCheck: 'false',
+        weight: 34,
+        weightUnit: 'kg',
+        height: 90,
+        heightUnit: 'cm',
+        email: 'poo@toilet.room',
+        phone: '+447906322752'
+      };
+
+      expect(localStorage.setItem).toHaveBeenCalledWith(
+        appName,
+        JSON.stringify(expectedData)
+      );
     });
   });
 });

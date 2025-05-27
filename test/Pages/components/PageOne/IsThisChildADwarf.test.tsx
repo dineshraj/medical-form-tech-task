@@ -6,13 +6,14 @@ import { vitest } from 'vitest';
 
 
 const registeredMock = vitest.fn() as unknown as UseFormRegisterReturn<'height'>;
+const unitedRegisteredMock = vitest.fn() as unknown as UseFormRegisterReturn<'heightUnit'>;
 const errorsMock = vitest.fn() as unknown as FieldErrors<FieldValues>;
 
 
 describe('IsThisChildADwarf', () => {
   describe('height', () => {
     it('renders the label to enter values for your stumpy child', async () => {
-      render(<IsThisChildADwarf registered={registeredMock} errors={errorsMock}/>);
+      render(<IsThisChildADwarf unitRegistered={unitedRegisteredMock} registered={registeredMock} errors={errorsMock}/>);
 
       const height = await screen.findByTestId(
         'how-stumpy-is-the-child-input-label'
@@ -22,7 +23,7 @@ describe('IsThisChildADwarf', () => {
     });
 
     it('renders the input box', async () => {
-      render(<IsThisChildADwarf registered={registeredMock} errors={errorsMock}/>);
+      render(<IsThisChildADwarf unitRegistered={unitedRegisteredMock} registered={registeredMock} errors={errorsMock}/>);
 
       const heightInput = await screen.findByTestId(
         'how-stumpy-is-the-child-input'
@@ -33,7 +34,7 @@ describe('IsThisChildADwarf', () => {
 
     describe('unit', () => {
       it('renders the label to enter values for your stumpy child', async () => {
-        render(<IsThisChildADwarf registered={registeredMock} errors={errorsMock}/>);
+        render(<IsThisChildADwarf unitRegistered={unitedRegisteredMock} registered={registeredMock} errors={errorsMock}/>);
 
         const height = await screen.findByTestId(
           'how-stumpy-is-the-child-unit-label'
@@ -43,7 +44,7 @@ describe('IsThisChildADwarf', () => {
       });
 
       it('renders the options', async () => {
-        render(<IsThisChildADwarf registered={registeredMock} errors={errorsMock}/>);
+        render(<IsThisChildADwarf unitRegistered={unitedRegisteredMock} registered={registeredMock} errors={errorsMock}/>);
 
         const heightInput = await screen.findByTestId(
           'how-stumpy-is-the-child-unit'

@@ -5,13 +5,14 @@ import { vitest } from 'vitest';
 
 
 const registeredMock = vitest.fn() as unknown as UseFormRegisterReturn<'weight'>;
+const unitRegisteredMock = vitest.fn() as unknown as UseFormRegisterReturn<'weightUnit'>;
 const errorsMock = vitest.fn() as unknown as FieldErrors<FieldValues>;
 
 
 describe('IsThisChildAFatty', () => {
   describe('weight', () => {
     it('renders the label to enter values for your fat child', async () => {
-      render(<IsThisChildAFatty registered={registeredMock} errors={errorsMock}/>);
+      render(<IsThisChildAFatty unitRegistered={unitRegisteredMock} registered={registeredMock} errors={errorsMock}/>);
 
       const weight = await screen.findByTestId(
         'how-fat-is-the-child-input-label'
@@ -21,7 +22,7 @@ describe('IsThisChildAFatty', () => {
     });
 
     it('renders the input box', async () => {
-      render(<IsThisChildAFatty registered={registeredMock} errors={errorsMock}/>);
+      render(<IsThisChildAFatty unitRegistered={unitRegisteredMock} registered={registeredMock} errors={errorsMock}/>);
 
       const weightInput = await screen.findByTestId(
         'how-fat-is-the-child-input'
@@ -33,7 +34,7 @@ describe('IsThisChildAFatty', () => {
 
   describe('unit', () => {
     it('renders the label to enter values for your fat child', async () => {
-      render(<IsThisChildAFatty registered={registeredMock} errors={errorsMock}/>);
+      render(<IsThisChildAFatty unitRegistered={unitRegisteredMock} registered={registeredMock} errors={errorsMock}/>);
 
       const weight = await screen.findByTestId(
         'how-fat-is-the-child-unit-label'
@@ -43,7 +44,7 @@ describe('IsThisChildAFatty', () => {
     });
 
     it('renders the weight units', async () => {
-      render(<IsThisChildAFatty registered={registeredMock} errors={errorsMock}/>);
+      render(<IsThisChildAFatty unitRegistered={unitRegisteredMock} registered={registeredMock} errors={errorsMock}/>);
 
       const weightInput = await screen.findByTestId(
         'how-fat-is-the-child-unit'
