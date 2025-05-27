@@ -1,8 +1,9 @@
 import DatePicker from 'react-datepicker';
 import { datePlaceholderText, pageOne } from '../../../lib/lang';
-import '../../../styles/Pages/PageOne/DateOfBirth.css';
 import { FieldValues } from 'react-hook-form';
+import ErrorMessage from '../ErrorMessage';
 
+import '../../../styles/Pages/PageOne/DateOfBirth.css';
 interface DateOfBirthProps {
   onChange: (date: Date | null) => void;
   value: Date | null;
@@ -10,7 +11,7 @@ interface DateOfBirthProps {
 }
 
 const DateOfBirth = ({ value, onChange, error }: DateOfBirthProps) => {
-  const errorMessage = error?.message || null;
+  const errorMessage = error ? error.message : null;
 
   return (
     <label htmlFor="dob" data-testid="date-of-birth-label">
@@ -25,7 +26,7 @@ const DateOfBirth = ({ value, onChange, error }: DateOfBirthProps) => {
         id="dob"
         showIcon={true}
       />
-      {errorMessage && <p className="error-text">{errorMessage}</p>}
+      {errorMessage && <ErrorMessage error={errorMessage} />}
     </label>
   );
 };

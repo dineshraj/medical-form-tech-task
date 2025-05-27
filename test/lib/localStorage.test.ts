@@ -13,7 +13,7 @@ describe('localStorage', () => {
     const newData = {
       symptoms: ['speach-and-communication', 'being a prick']
     };
-    
+      
     updateLocalStorage(newData);
     
     const expectedDataAsObject = {

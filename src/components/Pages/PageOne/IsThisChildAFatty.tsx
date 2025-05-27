@@ -40,7 +40,7 @@ const IsThisChildAFatty = ({
             data-testid="how-fat-is-the-child-unit"
             id="unit"
             defaultValue="kg"
-            name="weighunit"
+            name="weightunit"
           >
             <option value="kg">kg</option>
             <option value="lb">lb</option>
