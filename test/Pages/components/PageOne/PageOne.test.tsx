@@ -1,5 +1,5 @@
 import userEvent, { UserEvent } from '@testing-library/user-event';
-import { render, screen, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import PageOne from '../../../../src/components/Pages/PageOne';
 import {
   errorForThreeCharacters,
@@ -15,10 +15,15 @@ import {
 
 const fillInFormCorrectly = async (
   user: UserEvent,
-  { height, weight }: { height: boolean; weight: boolean } = {
-    height: false,
-    weight: false
-  }
+  {
+    height,
+    weight,
+    ageCheck
+  }: { height: boolean; weight: boolean; ageCheck: string } = {
+      height: false,
+      weight: false,
+      ageCheck: 'no'
+    }
 ) => {
   // child name
   const nameInput = (await screen.findByTestId(
@@ -38,7 +43,7 @@ const fillInFormCorrectly = async (
   await user.click(screen.getAllByRole('option')[0]);
 
   // age check
-  const ageCheckRadioButton = screen.getByTestId('age-check-no');
+  const ageCheckRadioButton = screen.getByTestId(`age-check-${ageCheck}`);
   await user.click(ageCheckRadioButton);
 
   // height
@@ -53,6 +58,11 @@ const fillInFormCorrectly = async (
   if (weight) {
     const weightInput = await screen.getByTestId('how-fat-is-the-child-input');
     await user.type(weightInput, '34');
+  }
+
+  if (ageCheck === 'yes') {
+    const weightInput = await screen.getByTestId('child-age-field-label');
+    await user.type(weightInput, '12');
   }
 
   // email
@@ -110,7 +120,7 @@ describe('PageOne', () => {
       expect(nameInput).toBeInTheDocument();
     });
 
-    it('shows error message when a number is entered', async () => {
+    it('shows error message when a number is entered', async () => { 
       const user = userEvent.setup();
 
       render(<PageOne />);
@@ -177,7 +187,7 @@ describe('PageOne', () => {
       expect(datePicker).toBeInTheDocument();
     });
 
-    it.skip('shows error message when a future is entered', async () => {
+    it.skip('shows error message when a future date is entered', async () => {
       const user = userEvent.setup();
 
       render(<PageOne />);
@@ -214,6 +224,30 @@ describe('PageOne', () => {
 
       expect(noRadio).toBeInTheDocument();
       expect(yesRadio).toBeInTheDocument();
+    });
+
+    it('renders a new field if the baby is born less than 37 weeks ago', async () => {
+      const user = userEvent.setup();
+
+      render(<PageOne />);
+      const yesRadio = await screen.findByTestId('age-check-yes');
+      const weeksOld = screen.queryByTestId('child-age-field-label');
+      expect(weeksOld).not.toBeInTheDocument();
+      await user.click(yesRadio);
+      await waitFor(() => {
+        const weeksOld = screen.queryByTestId('child-age-field-label');
+        expect(weeksOld).toBeInTheDocument();
+      });
+    });
+
+    it('does not render a new field if the baby is born less more than 37 weeks ago', async () => {
+      const user = userEvent.setup();
+
+      render(<PageOne />);
+      const noRadio = await screen.findByTestId('age-check-no');
+      await user.click(noRadio);
+      const weeksOld = screen.queryByTestId('child-age-field-label');
+      expect(weeksOld).not.toBeInTheDocument();
     });
   });
 
@@ -534,7 +568,7 @@ describe('PageOne', () => {
       const expectedData = {
         name: 'anakin',
         dob: '2025-04-26T23:00:00.000Z',
-        ageCheck: 'false',
+        ageCheck: 'no',
         email: 'poo@toilet.room',
         phone: '+447906322752'
       };
@@ -548,7 +582,11 @@ describe('PageOne', () => {
     it('Adds data to local storage when the form is submitted with all fields', async () => {
       const user = userEvent.setup();
       render(<PageOne />);
-      await fillInFormCorrectly(user, { height: true, weight: true });
+      await fillInFormCorrectly(user, {
+        height: true,
+        weight: true,
+        ageCheck: 'yes'
+      });
 
       const nextButton = await screen.findByTestId('next-button-page-1');
 
@@ -560,7 +598,8 @@ describe('PageOne', () => {
       const expectedData = {
         name: 'anakin',
         dob: '2025-04-26T23:00:00.000Z',
-        ageCheck: 'false',
+        ageCheck: 'yes',
+        ageField: 12,
         weight: 34,
         weightUnit: 'kg',
         height: 90,

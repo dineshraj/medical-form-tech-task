@@ -43,7 +43,7 @@ describe('IsThisChildADwarf', () => {
         expect(height).toBeInTheDocument();
       });
 
-      it('renders the options', async () => {
+      it('renders the options for unit measurement', async () => {
         render(<IsThisChildADwarf unitRegistered={unitedRegisteredMock} registered={registeredMock} errors={errorsMock}/>);
 
         const heightInput = await screen.findByTestId(

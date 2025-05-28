@@ -8,3 +8,5 @@ export default createRoot(document.getElementById('root')!).render(
     <App />
   </StrictMode>
 );
+
+// TODO make the positive assertions in my tests .toBeVisible

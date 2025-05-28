@@ -1,18 +1,26 @@
 import {
-  FieldErrors,
+  // FieldErrors,
   FieldValues,
   UseFormRegisterReturn
 } from 'react-hook-form';
-import { pageOne } from '../../../lib/lang';
-import '../../../styles/Pages/PageOne/AgeCheck.css';
+import { pageOne } from '../../../../lib/lang';
+import '../../../../styles/Pages/PageOne/AgeCheck.css';
+// import { ChangeEventHandler } from 'react';
 
 interface AgeCheckProps {
   registered: UseFormRegisterReturn<'ageCheck'>;
-  errors: FieldErrors<FieldValues>;
+  error?: FieldValues;
 }
 
-const AgeCheck = ({ registered, errors }: AgeCheckProps) => {
-  const errorMessage = errors.ageCheck?.message as string;
+// interface AgeCheckProps {
+//   onChange: ChangeEventHandler<HTMLInputElement>;
+//   value: string;
+//   error?: FieldValues;
+// }
+
+const AgeCheck = ({ registered, error }: AgeCheckProps) => {
+  // const AgeCheck = ({ onChange, error }: AgeCheckProps) => {
+  const errorMessage = error?.message as string;
 
   return (
     <div className="age-check-wrapper" data-testid="age-check-wrapper">
@@ -26,8 +34,9 @@ const AgeCheck = ({ registered, errors }: AgeCheckProps) => {
           type="radio"
           data-testid="age-check-no"
           name="ageCheck"
-          value="false"
+          value="no"
           className="age-check-input"
+          // onChange={onChange}
         />
         <span>No</span>
       </label>
@@ -38,7 +47,8 @@ const AgeCheck = ({ registered, errors }: AgeCheckProps) => {
           data-testid="age-check-yes"
           className="age-check-input"
           name="ageCheck"
-          value="true"
+          value="yes"
+          // onChange={onChange}
         />
         Yes
       </label>
