@@ -56,7 +56,7 @@ const PageOne = () => {
 
     updateLocalStorage(updatedData);
   };
-  
+
   return (
     <>
       <h1>{pageOne.title}</h1>
@@ -74,7 +74,10 @@ const PageOne = () => {
             return <DateOfBirth {...field} error={errors['dob']} />;
           }}
         />
-        <AgeCheck registered={register('ageCheck')} error={errors['ageCheck']} />
+        <AgeCheck
+          registered={register('ageCheck')}
+          error={errors['ageCheck']}
+        />
         {selectedAgeOption === 'yes' && (
           <AgeField registered={register('ageField')} errors={errors} />
         )}
