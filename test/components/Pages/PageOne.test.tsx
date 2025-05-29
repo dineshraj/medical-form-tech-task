@@ -1,6 +1,6 @@
 import userEvent, { UserEvent } from '@testing-library/user-event';
 import { render, screen, waitFor, within } from '@testing-library/react';
-import PageOne from '../../../../src/components/Pages/PageOne';
+import PageOne from '../../../src/components/Pages/PageOne';
 import {
   errorForThreeCharacters,
   errorForNumbers,
@@ -10,14 +10,14 @@ import {
   errorForPhone,
   errorForDate,
   datePlaceholderText
-} from '../../../../src/lib/lang';
-import { FORM_KEY } from '../../../../src/App';
+} from '../../../src/lib/lang';
+import { FORM_KEY } from '../../../src/App';
 
 import { FormProvider, useForm } from 'react-hook-form';
 import { MemoryRouter } from 'react-router-dom';
 import { ReactElement, ReactNode } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import PageOneSchema from '../../../../src/lib/schema';
+import PageOneSchema from '../../../src/lib/schema';
 
 const fillInFormCorrectly = async (
   user: UserEvent,

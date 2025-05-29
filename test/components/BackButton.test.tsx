@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import BackButton from '../../../src/components/Pages/BackButton';
+import BackButton from '../../src/components/BackButton';
 
 describe('BackButton', () => {
   it('renders the back button', async () => {

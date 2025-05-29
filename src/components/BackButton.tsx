@@ -1,4 +1,4 @@
-import { back } from '../../lib/lang';
+import { back } from '../lib/lang';
 
 interface BackButtonProps {
   page: number;

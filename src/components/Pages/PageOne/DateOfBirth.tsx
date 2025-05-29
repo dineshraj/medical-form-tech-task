@@ -1,7 +1,7 @@
 import DatePicker from 'react-datepicker';
 import { datePlaceholderText, pageOne } from '../../../lib/lang';
 import { FieldValues } from 'react-hook-form';
-import ErrorMessage from '../ErrorMessage';
+import ErrorMessage from '../../ErrorMessage';
 
 import '../../../styles/Pages/PageOne/DateOfBirth.css';
 interface DateOfBirthProps {

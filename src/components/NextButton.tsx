@@ -1,4 +1,4 @@
-import { next } from '../../lib/lang';
+import { next } from '../lib/lang';
 
 import '../../styles/NextButton.css';
 

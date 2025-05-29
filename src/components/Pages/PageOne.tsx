@@ -16,8 +16,8 @@ import IsThisChildAFatty from './PageOne/IsThisChildAFatty';
 import IsThisChildADwarf from './PageOne/IsThisChildADwarf';
 import Email from './PageOne/Email';
 import PhoneNumber from './PageOne/PhoneNumber';
-import NextButton from './NextButton';
-import BackButton from './BackButton';
+import NextButton from '../NextButton';
+import BackButton from '../BackButton';
 import AgeField from './PageOne/AgeCheck/AgeField';
 
 import { pageOne, secondPage } from '../../lib/lang';
@@ -48,7 +48,7 @@ const PageOne = () => {
   }, []);
 
   const { errors, isValid: formValid } = useFormState({ control });
-  
+
   const onSubmit: SubmitHandler<PageOneT> = async (data: PageOneT) => {
     const result = PageOneSchema.safeParse(data);
     if (result.success) {
