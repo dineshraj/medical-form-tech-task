@@ -1,11 +1,18 @@
-import PageOne from './Pages/PageOne';
-import '../styles/Pages.css';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, FormProvider } from 'react-hook-form';
+import { Outlet } from 'react-router-dom';
+import PageOneSchema from '../lib/schema';
 
 const Page = () => {
+  const formMethods = useForm({
+    mode: 'onChange',
+    resolver: zodResolver(PageOneSchema)
+  });
+
   return (
-    <div className="page-container" data-testid="page-container">
-      <PageOne />
-    </div>
+    <FormProvider {...formMethods}>
+      <Outlet />
+    </FormProvider>
   );
 };
 

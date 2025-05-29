@@ -21,7 +21,7 @@ const AgeField = ({ registered, errors }: AgeFieldProps) => {
         name="ageField"
         className={errorMessage ? 'error-border' : ''}
         id="ageField"
-        data-testid="age-field-select"
+        data-testid="age-field"
       />
       {errorMessage && <p className="error-text">{errorMessage}</p>}
     </label>

@@ -9,9 +9,15 @@ import {
   errorForName,
   errorForPhone,
   errorForDate,
-  datePlaceholderText,
-  appName
+  datePlaceholderText
 } from '../../../../src/lib/lang';
+import { FORM_KEY } from '../../../../src/App';
+
+import { FormProvider, useForm } from 'react-hook-form';
+import { MemoryRouter } from 'react-router-dom';
+import { ReactElement, ReactNode } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import PageOneSchema from '../../../../src/lib/schema';
 
 const fillInFormCorrectly = async (
   user: UserEvent,
@@ -20,10 +26,10 @@ const fillInFormCorrectly = async (
     weight,
     ageCheck
   }: { height: boolean; weight: boolean; ageCheck: string } = {
-      height: false,
-      weight: false,
-      ageCheck: 'no'
-    }
+    height: false,
+    weight: false,
+    ageCheck: 'no'
+  }
 ) => {
   // child name
   const nameInput = (await screen.findByTestId(
@@ -46,23 +52,27 @@ const fillInFormCorrectly = async (
   const ageCheckRadioButton = screen.getByTestId(`age-check-${ageCheck}`);
   await user.click(ageCheckRadioButton);
 
+  // age input if less than 37 weeks
+  if (ageCheck === 'yes') {
+    const ageField = screen.getByTestId('age-field');
+    await user.type(ageField, '33');
+  }
+
   // height
   if (height) {
-    const heightInput = await screen.getByTestId(
-      'how-stumpy-is-the-child-input'
-    );
+    const heightInput = screen.getByTestId('how-stumpy-is-the-child-input');
     await user.type(heightInput, '90');
   }
 
   // weight
   if (weight) {
-    const weightInput = await screen.getByTestId('how-fat-is-the-child-input');
+    const weightInput = screen.getByTestId('how-fat-is-the-child-input');
     await user.type(weightInput, '34');
   }
 
   if (ageCheck === 'yes') {
-    const weightInput = await screen.getByTestId('child-age-field-label');
-    await user.type(weightInput, '12');
+    // const weightInput = screen.getByTestId('child-age-field-label');
+    // await user.type(weightInput, '12');
   }
 
   // email
@@ -80,10 +90,36 @@ const fillInFormCorrectly = async (
   await user.type(phoneNumberInput, '7906322752');
 };
 
+const renderWithReactHookForm = (ui: ReactElement) => {
+  const Wrapper = ({ children }: { children: ReactNode }) => {
+    const methods = useForm({
+      mode: 'onChange',
+      resolver: zodResolver(PageOneSchema)
+    });
+
+    return (
+      <MemoryRouter>
+        <FormProvider {...methods}>{children}</FormProvider>
+      </MemoryRouter>
+    );
+  };
+
+  return {
+    ...render(ui, { wrapper: Wrapper })
+  };
+};
+
+const renderApp = () => {
+  renderWithReactHookForm(<PageOne />);
+};
+
 describe('PageOne', () => {
+  // afterEach(() => {
+  //   vi.restoreAllMocks();
+  // })
   describe('Back button', () => {
     it('renders the next button wrapper but not the button', async () => {
-      render(<PageOne />);
+      renderApp();
 
       const backButtonWrapper = await screen.findByTestId(
         'back-button-wrapper'
@@ -96,14 +132,14 @@ describe('PageOne', () => {
   });
 
   it('renders the title', async () => {
-    render(<PageOne />);
+    renderApp();
     const title = await screen.findByRole('heading', { level: 1 });
 
     expect(title.textContent).toBe(pageOne.title);
   });
 
   it('renders a form', async () => {
-    render(<PageOne />);
+    renderApp();
     const form = await screen.findByTestId('page-one-form');
 
     expect(form).toBeInTheDocument();
@@ -111,7 +147,7 @@ describe('PageOne', () => {
 
   describe('Child name', () => {
     it('renders the child name', async () => {
-      render(<PageOne />);
+      renderApp();
 
       const nameInput = (await screen.findByTestId(
         'child-name-input'
@@ -120,10 +156,10 @@ describe('PageOne', () => {
       expect(nameInput).toBeInTheDocument();
     });
 
-    it('shows error message when a number is entered', async () => { 
+    it('shows error message when a number is entered', async () => {
       const user = userEvent.setup();
 
-      render(<PageOne />);
+      renderApp();
 
       const nameInput = (await screen.findByTestId(
         'child-name-input'
@@ -139,7 +175,7 @@ describe('PageOne', () => {
     it('shows error message when not enough characters are entered', async () => {
       const user = userEvent.setup();
 
-      render(<PageOne />);
+      renderApp();
 
       const nameInput = (await screen.findByTestId(
         'child-name-input'
@@ -155,7 +191,7 @@ describe('PageOne', () => {
     it('adds a border when the input criteria is not met for the name', async () => {
       const user = userEvent.setup();
 
-      render(<PageOne />);
+      renderApp();
 
       const nameInput = (await screen.findByTestId(
         'child-name-input'
@@ -170,7 +206,7 @@ describe('PageOne', () => {
 
   describe('Child date of birth', () => {
     it('renders the date label', async () => {
-      render(<PageOne />);
+      renderApp();
       const dobLabel = await screen.findByTestId('date-of-birth-label');
 
       expect(dobLabel).toBeInTheDocument();
@@ -178,7 +214,7 @@ describe('PageOne', () => {
     });
 
     it('renders the date picker library', async () => {
-      render(<PageOne />);
+      renderApp();
       const datePickerLabel = await screen.findByTestId('date-of-birth-label');
 
       const datePicker =
@@ -190,7 +226,7 @@ describe('PageOne', () => {
     it.skip('shows error message when a future date is entered', async () => {
       const user = userEvent.setup();
 
-      render(<PageOne />);
+      renderApp();
 
       const dateLabel = await screen.findByTestId('date-of-birth-label');
       const dateInput = within(dateLabel).getByPlaceholderText(
@@ -210,7 +246,7 @@ describe('PageOne', () => {
 
   describe('Age check', () => {
     it('renders the age check label', async () => {
-      render(<PageOne />);
+      renderApp();
       const ageCheckLabel = await screen.findByTestId('age-check-label');
 
       expect(ageCheckLabel).toBeInTheDocument();
@@ -218,7 +254,7 @@ describe('PageOne', () => {
     });
 
     it('renders the right radio buttons', async () => {
-      render(<PageOne />);
+      renderApp();
       const noRadio = await screen.findByTestId('age-check-no');
       const yesRadio = await screen.findByTestId('age-check-yes');
 
@@ -229,7 +265,7 @@ describe('PageOne', () => {
     it('renders a new field if the baby is born less than 37 weeks ago', async () => {
       const user = userEvent.setup();
 
-      render(<PageOne />);
+      renderApp();
       const yesRadio = await screen.findByTestId('age-check-yes');
       const weeksOld = screen.queryByTestId('child-age-field-label');
       expect(weeksOld).not.toBeInTheDocument();
@@ -243,7 +279,7 @@ describe('PageOne', () => {
     it('does not render a new field if the baby is born less more than 37 weeks ago', async () => {
       const user = userEvent.setup();
 
-      render(<PageOne />);
+      renderApp();
       const noRadio = await screen.findByTestId('age-check-no');
       await user.click(noRadio);
       const weeksOld = screen.queryByTestId('child-age-field-label');
@@ -253,7 +289,7 @@ describe('PageOne', () => {
 
   describe('Weight check', () => {
     it('renders the weight label', async () => {
-      render(<PageOne />);
+      renderApp();
       const weightLabel = await screen.findByTestId(
         'how-fat-is-the-child-input-label'
       );
@@ -263,7 +299,7 @@ describe('PageOne', () => {
     });
 
     it('renders the weight input', async () => {
-      render(<PageOne />);
+      renderApp();
       const weightInput = await screen.findByTestId(
         'how-fat-is-the-child-input'
       );
@@ -272,7 +308,7 @@ describe('PageOne', () => {
     });
 
     it('renders the weight unit label', async () => {
-      render(<PageOne />);
+      renderApp();
       const weightLabel = await screen.findByTestId(
         'how-fat-is-the-child-unit-label'
       );
@@ -282,7 +318,7 @@ describe('PageOne', () => {
     });
 
     it('renders the weight unit select', async () => {
-      render(<PageOne />);
+      renderApp();
       const weightUnit = await screen.findByTestId('how-fat-is-the-child-unit');
 
       expect(weightUnit).toBeInTheDocument();
@@ -290,7 +326,7 @@ describe('PageOne', () => {
     });
 
     it('does not show an error message with nothing is entered', async () => {
-      render(<PageOne />);
+      renderApp();
 
       const childsFatWrapper = await screen.findByTestId(
         'how-fat-is-the-child-wrapper'
@@ -302,7 +338,7 @@ describe('PageOne', () => {
     it('shows error message when non-numbers are entered', async () => {
       const user = userEvent.setup();
 
-      render(<PageOne />);
+      renderApp();
 
       const weightInput = (await screen.findByTestId(
         'how-fat-is-the-child-input'
@@ -321,7 +357,7 @@ describe('PageOne', () => {
     it('adds a border when the input criteria is not met for the weight', async () => {
       const user = userEvent.setup();
 
-      render(<PageOne />);
+      renderApp();
 
       const weightInput = (await screen.findByTestId(
         'how-fat-is-the-child-input'
@@ -336,7 +372,7 @@ describe('PageOne', () => {
 
   describe('Height check', () => {
     it('renders the height label', async () => {
-      render(<PageOne />);
+      renderApp();
       const heightLabel = await screen.findByTestId(
         'how-stumpy-is-the-child-input-label'
       );
@@ -346,7 +382,7 @@ describe('PageOne', () => {
     });
 
     it('renders the height input', async () => {
-      render(<PageOne />);
+      renderApp();
       const heightInput = await screen.findByTestId(
         'how-stumpy-is-the-child-input'
       );
@@ -355,7 +391,7 @@ describe('PageOne', () => {
     });
 
     it('renders the height unit label', async () => {
-      render(<PageOne />);
+      renderApp();
       const heightLabel = await screen.findByTestId(
         'how-stumpy-is-the-child-unit-label'
       );
@@ -365,7 +401,7 @@ describe('PageOne', () => {
     });
 
     it('renders the height unit select', async () => {
-      render(<PageOne />);
+      renderApp();
       const heightUnit = await screen.findByTestId(
         'how-stumpy-is-the-child-unit'
       );
@@ -375,7 +411,7 @@ describe('PageOne', () => {
     });
 
     it('does not show an error message with nothing is entered', async () => {
-      render(<PageOne />);
+      renderApp();
 
       const childsHeightWrapper = await screen.findByTestId(
         'how-stumpy-is-the-child-wrapper'
@@ -387,7 +423,7 @@ describe('PageOne', () => {
     it('shows error message when non-numbers are entered', async () => {
       const user = userEvent.setup();
 
-      render(<PageOne />);
+      renderApp();
 
       const heightInput = (await screen.findByTestId(
         'how-stumpy-is-the-child-input'
@@ -406,7 +442,7 @@ describe('PageOne', () => {
     it('adds a border when the input criteria is not met for the height', async () => {
       const user = userEvent.setup();
 
-      render(<PageOne />);
+      renderApp();
 
       const heightInput = (await screen.findByTestId(
         'how-stumpy-is-the-child-input'
@@ -421,7 +457,7 @@ describe('PageOne', () => {
 
   describe('Email', () => {
     it('renders the Email name', async () => {
-      render(<PageOne />);
+      renderApp();
       const emailLabel = await screen.findByTestId('enter-your-email');
 
       expect(emailLabel).toBeInTheDocument();
@@ -429,7 +465,7 @@ describe('PageOne', () => {
     });
 
     it('does not show an error message with nothing is entered', async () => {
-      render(<PageOne />);
+      renderApp();
 
       const emailLabel = await screen.findByTestId('enter-your-email');
 
@@ -439,7 +475,7 @@ describe('PageOne', () => {
     it('does not show an error message when a valid email is entered', async () => {
       const user = userEvent.setup();
 
-      render(<PageOne />);
+      renderApp();
 
       const emailInput = (await screen.findByTestId(
         'enter-your-email-input'
@@ -456,7 +492,7 @@ describe('PageOne', () => {
     it('shows error message when an invalid email is entered', async () => {
       const user = userEvent.setup();
 
-      render(<PageOne />);
+      renderApp();
 
       const emailInput = (await screen.findByTestId(
         'enter-your-email-input'
@@ -473,7 +509,7 @@ describe('PageOne', () => {
     it('adds a border when the input criteria is not met for the email', async () => {
       const user = userEvent.setup();
 
-      render(<PageOne />);
+      renderApp();
 
       const emailInput = (await screen.findByTestId(
         'enter-your-email-input'
@@ -488,7 +524,7 @@ describe('PageOne', () => {
 
   describe('Phone Number', () => {
     it('renders the phone number label', async () => {
-      render(<PageOne />);
+      renderApp();
 
       const phoneNumberLabel = await screen.findByTestId('phone-number-label');
 
@@ -496,7 +532,7 @@ describe('PageOne', () => {
     });
 
     it('renders the phone npm package', async () => {
-      render(<PageOne />);
+      renderApp();
 
       const phoneNumberLabel = await screen.findByTestId('phone-number-label');
       // lots of options so get them all and select the first one
@@ -506,7 +542,7 @@ describe('PageOne', () => {
     });
 
     it('does not show an error message with nothing is entered', async () => {
-      render(<PageOne />);
+      renderApp();
 
       const phoneNumberLabel = await screen.findByTestId('phone-number-label');
 
@@ -516,7 +552,7 @@ describe('PageOne', () => {
     it('shows error message when a non-valid phone number is entered', async () => {
       const user = userEvent.setup();
 
-      render(<PageOne />);
+      renderApp();
 
       const phoneNumberLabel = await screen.findByTestId('phone-number-label');
       const phoneNumberInput = within(phoneNumberLabel).getByPlaceholderText(
@@ -532,7 +568,7 @@ describe('PageOne', () => {
 
   describe('Next button', () => {
     it('renders the next button as disabled by default', async () => {
-      render(<PageOne />);
+      renderApp();
 
       const nextButton = await screen.findByTestId('next-button-page-1');
 
@@ -542,7 +578,7 @@ describe('PageOne', () => {
 
     it('renders the next button as active when the correct values are entered for all required fields', async () => {
       const user = userEvent.setup();
-      render(<PageOne />);
+      renderApp();
       await fillInFormCorrectly(user);
 
       const nextButton = await screen.findByTestId('next-button-page-1');
@@ -553,9 +589,9 @@ describe('PageOne', () => {
   });
 
   describe('Local storage', () => {
-    it('Adds data to local storage when the form is submitted but does not include empty fields', async () => {
+    it('Adds data to local storage when the form is submitted but omits empty fields', async () => {
       const user = userEvent.setup();
-      render(<PageOne />);
+      renderApp();
       await fillInFormCorrectly(user);
 
       const nextButton = await screen.findByTestId('next-button-page-1');
@@ -581,7 +617,7 @@ describe('PageOne', () => {
 
     it('Adds data to local storage when the form is submitted with all fields', async () => {
       const user = userEvent.setup();
-      render(<PageOne />);
+      renderApp();
       await fillInFormCorrectly(user, {
         height: true,
         weight: true,
@@ -599,7 +635,7 @@ describe('PageOne', () => {
         name: 'anakin',
         dob: '2025-04-26T23:00:00.000Z',
         ageCheck: 'yes',
-        ageField: 12,
+        ageField: 33,
         weight: 34,
         weightUnit: 'kg',
         height: 90,
@@ -609,7 +645,7 @@ describe('PageOne', () => {
       };
 
       expect(localStorage.setItem).toHaveBeenCalledWith(
-        appName,
+        FORM_KEY,
         JSON.stringify(expectedData)
       );
     });

@@ -15,7 +15,7 @@ describe('AgeTest', () => {
   it('renders the age field', async () => {
     render(<AgeField errors={errorsMock} registered={registeredMock} />);
 
-    const ageField = await screen.findByTestId('age-field-select');
+    const ageField = await screen.findByTestId('age-field');
 
     expect(ageField).toBeInTheDocument();
   });

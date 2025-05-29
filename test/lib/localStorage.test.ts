@@ -1,5 +1,5 @@
 import { vi } from 'vitest';
-import { appName } from '../../src/lib/lang';
+import { FORM_KEY } from '../../src/App';
 import { updateLocalStorage } from '../../src/lib/localStorage';
 
 describe('localStorage', () => {
@@ -23,7 +23,7 @@ describe('localStorage', () => {
     const expectedDataInLocalStorage = JSON.stringify(expectedDataAsObject);
 
     expect(localStorage.setItem).toHaveBeenCalledWith(
-      appName,
+      FORM_KEY,
       expectedDataInLocalStorage
     );
   });
