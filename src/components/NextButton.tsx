@@ -1,6 +1,6 @@
 import { next } from '../lib/lang';
 
-import '../../styles/NextButton.css';
+import '../styles/NextButton.css';
 
 interface NextButtonProps {
   disabled: boolean;

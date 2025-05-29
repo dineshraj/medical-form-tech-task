@@ -1,7 +1,6 @@
 import {
   Controller,
   SubmitHandler,
-  // useForm,
   useFormContext,
   useFormState
 } from 'react-hook-form';
@@ -32,13 +31,6 @@ const PageOne = () => {
   const { register, trigger, control, handleSubmit, watch } =
     useFormContext<PageOneT>();
   const navigate = useNavigate();
-
-  // const { register, control, trigger, handleSubmit, watch } = useForm({
-  //   mode: 'onChange',
-  //   resolver: zodResolver(PageOneSchema)
-  // });
-  // const navigate = useNavigate();
-  // This watches a component and returns it's value to be used in another component
   const selectedAgeOption = watch('ageCheck'); // Watches the radio value
 
   useEffect(() => {
@@ -72,7 +64,7 @@ const PageOne = () => {
 
   return (
     <>
-      <ProgressBar sections={4} />
+      <ProgressBar sections={4} page={1} />
       <h1>{pageOne.title}</h1>
       <form
         className="form"

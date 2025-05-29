@@ -6,20 +6,21 @@ const { highlightedProgress, nonHighlightedProgress } = colours;
 
 interface ProgressBarProps {
   sections: number;
+  page: number;
 }
-const renderProgressBars = (sections: number) => {
+const renderProgressBars = (sections: number, page: number) => {
   return Array.from({ length: sections }, (_, index) => (
     <ProgressBarItem
       key={index}
-      color={index == 0 ? highlightedProgress : nonHighlightedProgress}
+      color={index + 1 == page ? highlightedProgress : nonHighlightedProgress}
     />
   ));
 };
 
-const ProgressBar = ({ sections }: ProgressBarProps) => {
+const ProgressBar = ({ sections, page }: ProgressBarProps) => {
   return (
     <div className="progress-bar" data-testid="progress-bar">
-      {renderProgressBars(sections)}
+      {renderProgressBars(sections, page)}
     </div>
   );
 };
