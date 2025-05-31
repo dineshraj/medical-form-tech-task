@@ -4,8 +4,6 @@ import {
   useFormContext,
   useFormState
 } from 'react-hook-form';
-
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 import ChildName from './PageOne/ChildName';
@@ -22,23 +20,14 @@ import AgeField from './PageOne/AgeCheck/AgeField';
 import { pageOne, secondPage } from '../../lib/lang';
 import ProgressBar from '../ProgressBar/ProgressBar';
 import { updateLocalStorage } from '../../lib/localStorage';
-import PageOneSchema, { PageOneT } from '../../lib/schema';
+import { PageOneSchema, PageOneT } from '../../lib/schema';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
 const PageOne = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { register, trigger, control, handleSubmit, watch } =
-    useFormContext<PageOneT>();
+  const { register, control, handleSubmit, watch } = useFormContext<PageOneT>();
   const navigate = useNavigate();
   const selectedAgeOption = watch('ageCheck'); // Watches the radio value
-
-  useEffect(() => {
-    // * triggers validation for all fields in react-form-hook
-    //TODO remove when debugging is done
-    // trigger();
-  }, []);
-
   const { errors, isValid: formValid } = useFormState({ control });
 
   const onSubmit: SubmitHandler<PageOneT> = async (data: PageOneT) => {
@@ -57,13 +46,13 @@ const PageOne = () => {
       };
 
       updateLocalStorage(updatedData);
-      // history.pushState(updatedData, '', secondPage);
       navigate(`/${secondPage}`);
     }
   };
 
   return (
     <>
+      <BackButton page={1} />
       <ProgressBar sections={4} page={1} />
       <h1>{pageOne.title}</h1>
       <form
@@ -71,7 +60,6 @@ const PageOne = () => {
         data-testid="page-one-form"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <BackButton page={1} />
         <ChildName registered={register('name')} errors={errors} />
         <Controller
           name="dob"

@@ -12,6 +12,9 @@ export const pageOne = {
   email: 'Email address',
   phoneNumber: 'Phone number'
 };
+export const pageTwo = {
+  title: 'needs help with...'
+};
 export const next = 'Next';
 export const back = 'Back';
 export const errorForThreeCharacters = 'Please enter at least three characters';

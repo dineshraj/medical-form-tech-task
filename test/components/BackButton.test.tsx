@@ -18,5 +18,12 @@ describe('BackButton', () => {
 
     expect(backButtonWrapper).toBeInTheDocument();
     expect(backButton).not.toBeInTheDocument();
-  })
+  });
+
+  it('renders the back icon', async () => {
+    render(<BackButton page={2} />);
+    const backIcon = await screen.findByRole('back-icon');
+
+    expect(backIcon).toBeInTheDocument();
+  });
 });

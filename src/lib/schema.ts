@@ -62,11 +62,19 @@ const PageOneSchema = z
     () => {
       return {
         path: ['ageField'],
-        message: 'hiiiii'
+        message: errorForAgeInput
       };
     }
   );
 
-export type PageOneT = z.infer<typeof PageOneSchema>;
+const PageTwoSchema = z.object({
+  name: z
+    .string()
+    .min(3, errorForThreeCharacters)
+    .refine((value) => /^[A-Za-z]+$/.test(value), { message: errorForName })
+});
 
-export default PageOneSchema;
+export type PageOneT = z.infer<typeof PageOneSchema>;
+export type PageTwoT = z.infer<typeof PageTwoSchema>;
+
+export  { PageOneSchema, PageTwoSchema };

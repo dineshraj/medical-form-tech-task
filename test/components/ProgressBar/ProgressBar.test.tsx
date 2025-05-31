@@ -15,7 +15,7 @@ describe('ProgressBar', () => {
   });
 
   it('renders the first progress item in a different colour', () => {
-    render(<ProgressBar sections={PROGRESS_BAR_COUNT}  page={1} />);
+    render(<ProgressBar sections={PROGRESS_BAR_COUNT} page={1} />);
 
     const progressBarItems = screen.getAllByTestId('progress-bar__item');
     expect(progressBarItems[0]).toHaveStyle(
@@ -27,10 +27,13 @@ describe('ProgressBar', () => {
     render(<ProgressBar sections={PROGRESS_BAR_COUNT} page={2} />);
     const progressBarItems = screen.getAllByTestId('progress-bar__item');
     expect(progressBarItems[0]).toHaveStyle(
-      'background-color: rgb(242, 242, 242);'
+      'background-color: rgb(118, 87, 191);'
     );
     expect(progressBarItems[1]).toHaveStyle(
       'background-color: rgb(118, 87, 191);'
+    );
+    expect(progressBarItems[2]).toHaveStyle(
+      'background-color: rgb(242, 242, 242);'
     );
   });
 });

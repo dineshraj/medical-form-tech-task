@@ -9,12 +9,14 @@ interface ProgressBarProps {
   page: number;
 }
 const renderProgressBars = (sections: number, page: number) => {
-  return Array.from({ length: sections }, (_, index) => (
-    <ProgressBarItem
-      key={index}
-      color={index + 1 == page ? highlightedProgress : nonHighlightedProgress}
-    />
-  ));
+  return Array.from({ length: sections }, (_, index) => {
+    return (
+      <ProgressBarItem
+        key={index}
+        color={index + 1 <= page ? highlightedProgress : nonHighlightedProgress}
+      />
+    );
+  });
 };
 
 const ProgressBar = ({ sections, page }: ProgressBarProps) => {

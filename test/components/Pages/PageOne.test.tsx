@@ -17,7 +17,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { MemoryRouter } from 'react-router-dom';
 import { ReactElement, ReactNode } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import PageOneSchema from '../../../src/lib/schema';
+import { PageOneSchema } from '../../../src/lib/schema';
 
 const fillInFormCorrectly = async (
   user: UserEvent,

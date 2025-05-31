@@ -28,9 +28,10 @@ input::placeholder {
   font-size: 14px;
 }
 
-.form {
+.symptom-form {
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .title {
