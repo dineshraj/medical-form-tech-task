@@ -12,7 +12,7 @@ interface AgeCheckProps {
   error?: FieldValues;
 }
 
-// interface AgeCheckProps {
+// interface AgleCheckProps {
 //   onChange: ChangeEventHandler<HTMLInputElement>;
 //   value: string;
 //   error?: FieldValues;

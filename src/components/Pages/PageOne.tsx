@@ -23,6 +23,7 @@ import { updateLocalStorage } from '../../lib/localStorage';
 import { PageOneSchema, PageOneT } from '../../lib/schema';
 
 import 'react-datepicker/dist/react-datepicker.css';
+// import { useEffect } from 'react';
 
 const PageOne = () => {
   const { register, control, handleSubmit, watch } = useFormContext<PageOneT>();
@@ -30,8 +31,13 @@ const PageOne = () => {
   const selectedAgeOption = watch('ageCheck'); // Watches the radio value
   const { errors, isValid: formValid } = useFormState({ control });
 
+  // useEffect(() => {
+  //   trigger();
+  // }, []);
+
   const onSubmit: SubmitHandler<PageOneT> = async (data: PageOneT) => {
     const result = PageOneSchema.safeParse(data);
+
     if (result.success) {
       const { weight, weightUnit, height, heightUnit, ageCheck, ageField } =
         data;

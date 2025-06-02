@@ -627,7 +627,7 @@ describe('PageOne', () => {
       //TODO don't hardcode these
       const expectedData = {
         name: 'anakin',
-        dob: '2025-04-26T23:00:00.000Z',
+        dob: '2025-05-31T23:00:00.000Z',
         ageCheck: 'no',
         email: 'poo@toilet.room',
         phone: '+447906322752'
@@ -657,7 +657,7 @@ describe('PageOne', () => {
       //TODO don't hardcode these
       const expectedData = {
         name: 'anakin',
-        dob: '2025-04-26T23:00:00.000Z',
+        dob: '2025-05-31T23:00:00.000Z',
         ageCheck: 'yes',
         ageField: 33,
         weight: 34,

@@ -4,26 +4,26 @@ import { ReactElement, ReactNode } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { MemoryRouter } from 'react-router-dom';
 import PageTwo from '../../../src/components/Pages//PageTwo';
-import { PageOneSchema, PageOneT } from '../../../src/lib/schema';
+import { PageTwoSchema, PageTwoT } from '../../../src/lib/schema';
 import userEvent, { UserEvent } from '@testing-library/user-event';
+import { FORM_KEY } from '../../../src/App';
+import { vi, vitest } from 'vitest';
 
 const fillInFormCorrectly = async (user: UserEvent) => {
-  const listItems = (await screen.findAllByTestId(
+  const symptomItem = (await screen.findAllByTestId(
     'symptom-item'
   )) as HTMLInputElement[];
 
-  await user.type(listItems[0], 'anakin');
+  await user.click(symptomItem[0]);
 };
 
 const renderWithReactHookForm = (
-  ui: ReactElement,
-  { defaultValues }: { defaultValues: PageOneT }
+  ui: ReactElement
 ) => {
   const Wrapper = ({ children }: { children: ReactNode }) => {
     const methods = useForm({
       mode: 'onChange',
-      resolver: zodResolver(PageOneSchema),
-      defaultValues
+      resolver: zodResolver(PageTwoSchema)
     });
 
     return (
@@ -39,11 +39,7 @@ const renderWithReactHookForm = (
 };
 
 const renderApp = () => {
-  renderWithReactHookForm(<PageTwo />, {
-    defaultValues: {
-      name: 'Dineshraj'
-    } as unknown as PageOneT
-  });
+  renderWithReactHookForm(<PageTwo />);
 };
 
 describe.only('PageTwo', () => {
@@ -88,8 +84,22 @@ describe.only('PageTwo', () => {
   });
 
   describe('title', () => {
+    beforeEach(() => {
+      localStorage.setItem(FORM_KEY, JSON.stringify({ name: 'Dineshraj' }));
+    });
+
+    afterEach(() => {
+      vitest.restoreAllMocks();
+    });
+
     it('renders the title with the name the user provided', async () => {
       renderApp();
+
+      const existingData = { name: 'Dineshraj' };
+
+      localStorage.getItem = vi.fn().mockImplementationOnce(() => {
+        return JSON.stringify(existingData);
+      });
       const title = await screen.findByRole('heading', { level: 1 });
 
       expect(title).toHaveTextContent('Dineshraj needs help with...');
@@ -100,8 +110,11 @@ describe.only('PageTwo', () => {
     it('displays all the symptoms that are given', async () => {
       renderApp();
       const symptomList = await screen.findByTestId('symptom-list');
+      const symptomItems = within(symptomList).getAllByTestId('symptom-item');
 
       expect(symptomList).toBeInTheDocument();
+      expect(symptomItems[0]).toHaveTextContent('Speech and Communication');
+      expect(symptomItems[1]).toHaveTextContent('Food and Nutrition');
     });
   });
 

@@ -1,12 +1,26 @@
 import { render, screen, within } from '@testing-library/react';
 import SymptomItem from '../../../../src/components/Pages/PageTwo/Symptoms/SymptonItem';
+import { vi, vitest } from 'vitest';
 
-describe('SymptonItem', () =>
+describe('SymptonItem', () => {
+  beforeEach(() => {
+    vitest.mock('react-hook-form', () => {
+      return {
+        useFormContext: vi.fn().mockReturnValue({
+          register: vi.fn()
+        })
+      };
+    });
+  });
+
+  afterEach(() => {
+    vitest.restoreAllMocks();
+  });
+
   it('renders a symptom item with the correct data', async () => {
     const mockItem = {
       id: 'dumb-af',
       name: 'Too retarded',
-      icon: 'icon-time',
       info: 'needs a lobotomy'
     };
     render(<SymptomItem {...mockItem} />);
@@ -16,6 +30,7 @@ describe('SymptonItem', () =>
     expect(listItem).toHaveTextContent(mockItem.name);
     expect(listItem).toHaveTextContent(mockItem.info);
 
-    const icon = within(listItem).getByRole('img');
-    expect(icon).toHaveAttribute('src', mockItem.icon);
-  }));
+    const icon = within(listItem).getByTestId('icon');
+    expect(icon).toHaveAttribute('class', 'symptom-list__icon');
+  });
+});

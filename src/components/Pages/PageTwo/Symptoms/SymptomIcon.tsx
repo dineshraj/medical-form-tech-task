@@ -8,6 +8,7 @@ const SymptomIcon = ({ fill }: { fill: string}) => (
     viewBox="0 0 128 128"
     enableBackground="new 0 0 128 128"
     className="symptom-list__icon"
+    data-testid="icon"
   >
     <g>
       <g>

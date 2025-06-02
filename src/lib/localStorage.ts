@@ -12,3 +12,10 @@ export const updateLocalStorage = (newData: object) => {
 
   localStorage.setItem(FORM_KEY, JSON.stringify(newObject));
 };
+
+export const getFromLocalStorage = (value: string) => {
+  const existingData = localStorage.getItem(FORM_KEY) || '{}';
+  const existingDataAsObject = JSON.parse(existingData);
+
+  return existingDataAsObject[value];
+};

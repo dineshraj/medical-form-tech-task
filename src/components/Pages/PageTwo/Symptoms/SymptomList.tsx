@@ -3,16 +3,16 @@ import { SymptomItemProps } from './SymptonItem';
 
 import '../../../../styles/Pages/PageTwo/SymptomList.css';
 
-interface SymptomList {
+interface SymptomListProps {
   data: SymptomItemProps[];
 }
 
-const SymptomList = ({ data }: SymptomList) => {
+const SymptomList = ({ data }: SymptomListProps) => {
   return (
     <div className="symptom-list" data-testid="symptom-list">
       {data &&
-        data.map((symptom: SymptomItemProps, i) => {
-          return <SymptomItem key={i} {...symptom} />;
+        data.map((symptom: SymptomItemProps) => {
+          return <SymptomItem key={symptom.id} {...symptom} />;
         })}
     </div>
   );

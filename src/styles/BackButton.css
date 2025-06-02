@@ -1,9 +1,9 @@
 .back-button-wrapper {
-  height: 30px;
-  margin-bottom: 20px;
 }
 
 .back-button {
+  height: 30px;
+  margin-bottom: 20px;
   background: none;
   border: none;
   /* display: inline-block; */

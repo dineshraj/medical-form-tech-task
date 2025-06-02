@@ -1,6 +1,7 @@
 import SymptomIcon from './SymptomIcon';
 import colours from '../../../../lib/colours';
 import '../../../../styles/Pages/PageTwo/SymptomItem.css';
+import { useFormContext } from 'react-hook-form';
 
 const { iconDefaultColor } = colours;
 
@@ -10,13 +11,19 @@ export interface SymptomItemProps {
   id: string;
 }
 const SymptomItem = ({ name, info, id }: SymptomItemProps) => {
+  const { register } = useFormContext();
+
+  // TODO figuire out why the value isn't being sent
+
   return (
     <li data-id={id} className="symptom-item" data-testid="symptom-item">
       <input
         type="checkbox"
         className="symptom-item__checkbox"
         id={id}
-        name={id}
+        {...register('symptomItem')}
+        name="symptomItem"
+        value={id}
       ></input>
       <label className="symptom-item__label" htmlFor={id}>
         <SymptomIcon fill={iconDefaultColor} />

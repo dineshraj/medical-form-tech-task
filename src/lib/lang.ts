@@ -26,5 +26,7 @@ export const errorForEmail = 'Please enter a valid email';
 export const errorForName = 'Unless you are Elon, enter goddamn letters';
 export const errorForPhone = 'That is not a phone number';
 export const datePlaceholderText = 'Click to select a date';
+export const errorForCheckList =
+  'Select at least one, you know your child has problems fam';
 
 export const secondPage = 'ailments';

@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import SymptomList from '../../../../src/components/Pages/PageTwo/Symptoms/SymptomList';
+import { vi, vitest } from 'vitest';
 
 const mockData = [
   {
@@ -23,6 +24,19 @@ const mockData = [
 ];
 
 describe('SymptomList', () => {
+  beforeEach(() => {
+    vitest.mock('react-hook-form', () => {
+      return {
+        useFormContext: vi.fn().mockReturnValue({
+          register: vi.fn()
+        })
+      };
+    });
+  });
+
+  afterEach(() => {
+    vitest.restoreAllMocks();
+  });
   it('renders all the provided data', async () => {
     render(<SymptomList data={mockData} />);
 

@@ -2,21 +2,34 @@ import BackButton from '../BackButton';
 import ProgressBar from '../ProgressBar/ProgressBar';
 
 import { pageTwo } from '../../lib/lang';
-import { useFormContext, useFormState } from 'react-hook-form';
-import { PageTwoT } from '../../lib/schema';
-import { FORM_KEY } from '../../App';
+import { SubmitHandler, useFormContext, useFormState } from 'react-hook-form';
+import { PageTwoSchema, PageTwoT } from '../../lib/schema';
+// import { FORM_KEY } from '../../App';
 
 import { childSymptomsList } from '../../../src/data/';
 import SymptomList from './PageTwo/Symptoms/SymptomList';
 import NextButton from '../NextButton';
+import { getFromLocalStorage } from '../../lib/localStorage';
+import { useEffect } from 'react';
+// import { FORM_KEY } from '../../App';
+// import { getFromLocalStorate } from '../../lib/localStorage';
 
 const PageTwo = () => {
-  const { getValues, control, handleSubmit } = useFormContext<PageTwoT>();
-  const name =
-    getValues('name') || JSON.parse(localStorage.getItem(FORM_KEY)!).name;
-  const { errors, isValid: formValid } = useFormState({ control });
+  const { control, handleSubmit, trigger } = useFormContext<PageTwoT>();
+  const name = getFromLocalStorage('name');
 
-  const onSubmit = () => {};
+  // useEffect(() => {
+  //   trigger();
+  // }, []);
+
+  // // const name = localStorage.getItem(FORM_KEY).name;
+  const { errors, isValid: formValid } = useFormState({ control });
+  // console.log('🚀 ~ PageTwo ~ errors:', errors);
+  const errorMessage = errors['symptomItem']?.message as string;
+
+  const onSubmit: SubmitHandler<PageTwoT> = async (data: PageTwoT) => {
+    const result = PageTwoSchema.safeParse(data);
+  };
 
   // TODO page one for reference- delete
   // const onSubmit: SubmitHandler<PageOneT> = async (data: PageOneT) => {
@@ -44,14 +57,15 @@ const PageTwo = () => {
       <ProgressBar sections={4} page={2} />
       <h1>{`${name} ${pageTwo.title}`}</h1>
       <form
-        name="symptom-form"
-        className="symptom-form"
-        data-testid="page-one-form"
+        name="symptomForm"
+        className="form"
+        data-testid="page-two-form"
         onSubmit={handleSubmit(onSubmit)}
       >
         <SymptomList data={childSymptomsList} />
-        <NextButton disabled={!formValid} page={1} />
+        <NextButton disabled={!formValid} page={2} />
       </form>
+      {errorMessage && <p className="error-text">{errorMessage}</p>}
     </>
   );
 };
