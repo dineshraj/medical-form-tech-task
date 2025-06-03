@@ -1,6 +1,6 @@
 import { useForm, FormProvider } from 'react-hook-form';
 import { Outlet, useLocation } from 'react-router-dom';
-import { schemaMap } from '../lib/schema';
+import { PageTwoT, schemaMap } from '../lib/schema';
 import { useCallback } from 'react';
 import { z } from 'zod';
 
@@ -12,10 +12,9 @@ const Page = () => {
   const resolver = useCallback(
     // TODO how do make this not an 'any''
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async (data: any) => {
+    async (data: PageTwoT[]) => {
       const result = await currentSchema.safeParseAsync(data);
 
-      // console.log('🚀 ~ result.:', result);
       return {
         values: result.success ? result.data : {},
         errors: result.success
@@ -39,7 +38,7 @@ const Page = () => {
   const formMethods = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
-    resolver //: zodResolver(combinedRefinedSchema)
+    resolver
   });
 
   return (

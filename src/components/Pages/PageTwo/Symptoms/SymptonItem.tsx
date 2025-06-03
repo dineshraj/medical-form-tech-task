@@ -23,9 +23,14 @@ const SymptomItem = ({ name, info, id }: SymptomItemProps) => {
         id={id}
         {...register('symptomItem')}
         name="symptomItem"
-        value={id}
+        value={name}
+        data-testid={id}
       ></input>
-      <label className="symptom-item__label" htmlFor={id}>
+      <label
+        className="symptom-item__label"
+        data-testid={`${id}-label`}
+        htmlFor={id}
+      >
         <SymptomIcon fill={iconDefaultColor} />
         <div className="symptom-item__content">
           <h2 className="symptom-item__name">{name}</h2>

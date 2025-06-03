@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import Pages from './components/Pages';
 import PageOne from './components/Pages/PageOne';
 import PageTwo from './components/Pages/PageTwo';
+import PageThree from './components/Pages/PageThree';
 
 import './styles/App.css';
 import './styles/Pages.css';
@@ -15,7 +16,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Pages />}>
             <Route index element={<PageOne />} />
-            <Route path="/ailments" element={<PageTwo />} />
+            <Route path="/symptoms" element={<PageTwo />} />
+            <Route path="/details" element={<PageThree />} />
           </Route>
         </Routes>
       </div>

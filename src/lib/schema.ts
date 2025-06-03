@@ -1,5 +1,5 @@
 import parsePhoneNumberFromString from 'libphonenumber-js';
-import { z, ZodString } from 'zod';
+import { z } from 'zod';
 import {
   errorForThreeCharacters,
   errorForName,
@@ -56,7 +56,11 @@ export const PageOneSchema = z.object({
 });
 
 export const PageTwoSchema = z.object({
-  symptomItem: z.array(z.string()).min(1, errorForCheckList)
+  symptomItem: z.array(z.string()).min(1)
+});
+
+export const PageThreeSchema = z.object({
+  symptomDetails: z.array(z.string()).min(1)
 });
 
 export const combinedSchema = {
@@ -64,27 +68,12 @@ export const combinedSchema = {
   ...PageTwoSchema.shape
 };
 
-export const combinedRefinedSchema = z
-  .object(combinedSchema)
-  .superRefine(({ ageCheck, ageField }, ctx) => {
-    if (ageCheck === 'yes') {
-      // return ageField !== undefined;
-      if (!ageField || isNaN(Number(ageField))) {
-        ctx.addIssue({
-          path: ['ageField'],
-          code: z.ZodIssueCode.custom,
-          message: errorForNumbers
-        });
-      }
-    }
-  });
-
 // TODO put this in a file and use the same routes in App.tsx
 export const schemaMap: Record<string, z.ZodTypeAny> = {
   '/': PageOneSchema,
-  '/ailments': PageTwoSchema
+  '/symptoms': PageTwoSchema
 };
 
 export type PageOneT = z.infer<typeof PageOneSchema>;
 export type PageTwoT = z.infer<typeof PageTwoSchema>;
-export type CombinedSchemaType = z.infer<typeof combinedRefinedSchema>;
+export type PageThreeT = z.infer<typeof PageThreeSchema>;

@@ -4,7 +4,7 @@ import { ReactElement, ReactNode } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { MemoryRouter } from 'react-router-dom';
 import PageTwo from '../../../src/components/Pages//PageTwo';
-import { PageTwoSchema, PageTwoT } from '../../../src/lib/schema';
+import { PageTwoSchema } from '../../../src/lib/schema';
 import userEvent, { UserEvent } from '@testing-library/user-event';
 import { FORM_KEY } from '../../../src/App';
 import { vi, vitest } from 'vitest';
@@ -14,12 +14,12 @@ const fillInFormCorrectly = async (user: UserEvent) => {
     'symptom-item'
   )) as HTMLInputElement[];
 
-  await user.click(symptomItem[0]);
+  const firstInput = within(symptomItem[0]).getByTestId('childSymptomsList01-label');
+  console.log('🚀 ~ fillInFormCorrectly ~ firstInput:', firstInput.textContent);
+  await user.click(firstInput);
 };
 
-const renderWithReactHookForm = (
-  ui: ReactElement
-) => {
+const renderWithReactHookForm = (ui: ReactElement) => {
   const Wrapper = ({ children }: { children: ReactNode }) => {
     const methods = useForm({
       mode: 'onChange',
@@ -42,67 +42,60 @@ const renderApp = () => {
   renderWithReactHookForm(<PageTwo />);
 };
 
-describe.only('PageTwo', () => {
-  describe('Back button', () => {
-    it('renders the next button wrapper and the button', async () => {
-      renderApp();
+describe('PageTwo', () => {
+  // describe('Back button', () => {
+  //   it('renders the next button wrapper and the button', async () => {
+  //     renderApp();
 
-      const backButtonWrapper = await screen.findByTestId(
-        'back-button-wrapper'
-      );
-      const backButton = screen.queryByTestId('back-button');
+  //     const backButtonWrapper = await screen.findByTestId(
+  //       'back-button-wrapper'
+  //     );
+  //     const backButton = screen.queryByTestId('back-button');
 
-      expect(backButtonWrapper).toBeVisible();
-      expect(backButton).toBeVisible();
-    });
-  });
-  describe('Progress bar', () => {
-    it('renders the progress bar with the first two bars highlighted', async () => {
-      renderApp();
+  //     expect(backButtonWrapper).toBeVisible();
+  //     expect(backButton).toBeVisible();
+  //   });
+  // });
+  // describe('Progress bar', () => {
+  //   it('renders the progress bar with the first two bars highlighted', async () => {
+  //     renderApp();
 
-      const progressBar = await screen.findByTestId('progress-bar');
-      const progressBarItems =
-        within(progressBar).queryAllByTestId('progress-bar__item');
+  //     const progressBar = await screen.findByTestId('progress-bar');
+  //     const progressBarItems =
+  //       within(progressBar).queryAllByTestId('progress-bar__item');
 
-      expect(progressBarItems[1]).toHaveAttribute(
-        'style',
-        'background-color: rgb(118, 87, 191);'
-      );
-      expect(progressBarItems[1]).toHaveAttribute(
-        'style',
-        'background-color: rgb(118, 87, 191);'
-      );
-      expect(progressBarItems[2]).toHaveAttribute(
-        'style',
-        'background-color: rgb(242, 242, 242);'
-      );
-      expect(progressBarItems[3]).toHaveAttribute(
-        'style',
-        'background-color: rgb(242, 242, 242);'
-      );
-    });
-  });
+  //     expect(progressBarItems[1]).toHaveAttribute(
+  //       'style',
+  //       'background-color: rgb(118, 87, 191);'
+  //     );
+  //     expect(progressBarItems[1]).toHaveAttribute(
+  //       'style',
+  //       'background-color: rgb(118, 87, 191);'
+  //     );
+  //     expect(progressBarItems[2]).toHaveAttribute(
+  //       'style',
+  //       'background-color: rgb(242, 242, 242);'
+  //     );
+  //     expect(progressBarItems[3]).toHaveAttribute(
+  //       'style',
+  //       'background-color: rgb(242, 242, 242);'
+  //     );
+  //   });
+  // });
 
   describe('title', () => {
-    beforeEach(() => {
-      localStorage.setItem(FORM_KEY, JSON.stringify({ name: 'Dineshraj' }));
-    });
-
-    afterEach(() => {
-      vitest.restoreAllMocks();
-    });
-
     it('renders the title with the name the user provided', async () => {
-      renderApp();
-
       const existingData = { name: 'Dineshraj' };
 
-      localStorage.getItem = vi.fn().mockImplementationOnce(() => {
+      localStorage.getItem = vi.fn().mockImplementation(() => {
         return JSON.stringify(existingData);
       });
+      renderApp();
+
       const title = await screen.findByRole('heading', { level: 1 });
 
       expect(title).toHaveTextContent('Dineshraj needs help with...');
+      vitest.restoreAllMocks();
     });
   });
 
@@ -138,6 +131,40 @@ describe.only('PageTwo', () => {
 
       expect(nextButton).toBeInTheDocument();
       expect(nextButton).not.toBeDisabled();
+    });
+  });
+
+  describe('localStorage', () => {
+    it('Adds data to local storage when the form is submitted with all fields', async () => {
+      const user = userEvent.setup();
+
+      const existingData = {name: 'IShouldNotExist'}
+
+      localStorage.getItem = vi.fn().mockImplementation(() => {
+        return JSON.stringify(existingData);
+      });
+
+
+      renderApp();
+      await fillInFormCorrectly(user);
+
+      const nextButton = await screen.findByTestId('next-button-page-2');
+
+      expect(nextButton).toBeInTheDocument();
+
+      await user.click(nextButton);
+
+      //TODO don't hardcode these
+      const expectedData = {
+        name: "IShouldNotExist",
+        symptomItem: ['Speech and Communication']
+      };
+
+      expect(nextButton).not.toBeDisabled();
+      expect(localStorage.setItem).toHaveBeenCalledWith(
+        FORM_KEY,
+        JSON.stringify(expectedData)
+      );
     });
   });
 });

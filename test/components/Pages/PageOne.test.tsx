@@ -18,6 +18,17 @@ import { MemoryRouter } from 'react-router-dom';
 import { ReactElement, ReactNode } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PageOneSchema } from '../../../src/lib/schema';
+import { vi } from 'vitest';
+
+const mockNavigate = vi.fn();
+
+vi.mock('react-router', async () => {
+  const original = await vi.importActual('react-router');
+  return {
+    ...original,
+    useNavigate: () => mockNavigate
+  };
+});
 
 const fillInFormCorrectly = async (
   user: UserEvent,
@@ -667,11 +678,28 @@ describe('PageOne', () => {
         email: 'poo@toilet.room',
         phone: '+447906322752'
       };
-
       expect(localStorage.setItem).toHaveBeenCalledWith(
         FORM_KEY,
         JSON.stringify(expectedData)
       );
+    });
+
+    it('calls navigate() with the right url', async () => {
+      const user = userEvent.setup();
+
+      renderApp();
+      await fillInFormCorrectly(user, {
+        height: true,
+        weight: true,
+        ageCheck: 'yes'
+      });
+
+      const nextButton = await screen.findByTestId('next-button-page-1');
+      expect(nextButton).toBeInTheDocument();
+
+      await user.click(nextButton);
+
+      expect(mockNavigate).toHaveBeenCalledWith('/symptoms');
     });
   });
 });

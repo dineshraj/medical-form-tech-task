@@ -29,4 +29,4 @@ export const datePlaceholderText = 'Click to select a date';
 export const errorForCheckList =
   'Select at least one, you know your child has problems fam';
 
-export const secondPage = 'ailments';
+export const secondPage = 'symptoms';

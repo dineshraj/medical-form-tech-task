@@ -9,13 +9,16 @@ import { PageTwoSchema, PageTwoT } from '../../lib/schema';
 import { childSymptomsList } from '../../../src/data/';
 import SymptomList from './PageTwo/Symptoms/SymptomList';
 import NextButton from '../NextButton';
-import { getFromLocalStorage } from '../../lib/localStorage';
-import { useEffect } from 'react';
+import {
+  getFromLocalStorage,
+  updateLocalStorage
+} from '../../lib/localStorage';
+// import { useEffect } from 'react';
 // import { FORM_KEY } from '../../App';
 // import { getFromLocalStorate } from '../../lib/localStorage';
 
 const PageTwo = () => {
-  const { control, handleSubmit, trigger } = useFormContext<PageTwoT>();
+  const { control, handleSubmit /*, trigger */ } = useFormContext<PageTwoT>();
   const name = getFromLocalStorage('name');
 
   // useEffect(() => {
@@ -24,33 +27,17 @@ const PageTwo = () => {
 
   // // const name = localStorage.getItem(FORM_KEY).name;
   const { errors, isValid: formValid } = useFormState({ control });
-  // console.log('🚀 ~ PageTwo ~ errors:', errors);
   const errorMessage = errors['symptomItem']?.message as string;
 
   const onSubmit: SubmitHandler<PageTwoT> = async (data: PageTwoT) => {
     const result = PageTwoSchema.safeParse(data);
+
+    if (result.success) {
+      updateLocalStorage(data);
+      // navigator(`/${thirdPage}`);
+    }
   };
 
-  // TODO page one for reference- delete
-  // const onSubmit: SubmitHandler<PageOneT> = async (data: PageOneT) => {
-  //   const result = PageOneSchema.safeParse(data);
-  //   if (result.success) {
-  //     const { weight, weightUnit, height, heightUnit, ageCheck, ageField } =
-  //       data;
-
-  //     const updatedData = {
-  //       ...data,
-  //       weight: weight === 0 ? undefined : weight,
-  //       weightUnit: weight === 0 ? undefined : weightUnit,
-  //       height: height === 0 ? undefined : height,
-  //       heightUnit: height === 0 ? undefined : heightUnit,
-  //       ageField: ageCheck === 'no' ? undefined : ageField
-  //     };
-
-  //     updateLocalStorage(updatedData);
-  //     navigate(`/${secondPage}`);
-  //   }
-  // };
   return (
     <>
       <BackButton page={2} />
