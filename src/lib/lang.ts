@@ -15,6 +15,15 @@ export const pageOne = {
 export const pageTwo = {
   title: 'needs help with...'
 };
+
+export const pageTwoPointFive = {
+  title: 'Tell us more about'
+};
+
+export const pageThree = {
+  title: "Any other information you'd like us to know?"
+}
+
 export const next = 'Next';
 export const back = 'Back';
 export const errorForThreeCharacters = 'Please enter at least three characters';
@@ -30,3 +39,5 @@ export const errorForCheckList =
   'Select at least one, you know your child has problems fam';
 
 export const secondPage = 'symptoms';
+export const secondPagePt2 = 'details';
+export const thirdhPage = 'other';

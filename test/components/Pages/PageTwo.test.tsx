@@ -1,22 +1,33 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import { render, screen, within } from '@testing-library/react';
-import { ReactElement, ReactNode } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { vi } from 'vitest';
 import { useForm, FormProvider } from 'react-hook-form';
+import { ReactElement, ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import PageTwo from '../../../src/components/Pages//PageTwo';
-import { PageTwoSchema } from '../../../src/lib/schema';
 import userEvent, { UserEvent } from '@testing-library/user-event';
+import { PageTwoSchema } from '../../../src/lib/schema';
+import PageTwo from '../../../src/components/Pages//PageTwo';
 import { FORM_KEY } from '../../../src/App';
-import { vi, vitest } from 'vitest';
+
+const mockNavigate = vi.fn();
+
+vi.mock('react-router', async () => {
+  const original = await vi.importActual('react-router');
+  return {
+    ...original,
+    useNavigate: () => mockNavigate
+  };
+});
 
 const fillInFormCorrectly = async (user: UserEvent) => {
   const symptomItem = (await screen.findAllByTestId(
     'symptom-item'
   )) as HTMLInputElement[];
 
-  const firstInput = within(symptomItem[0]).getByTestId('childSymptomsList01-label');
-  console.log('🚀 ~ fillInFormCorrectly ~ firstInput:', firstInput.textContent);
-  await user.click(firstInput);
+  const firstLabel = within(symptomItem[0]).getByTestId(
+    'childSymptomsList01-label'
+  );
+  await user.click(firstLabel);
 };
 
 const renderWithReactHookForm = (ui: ReactElement) => {
@@ -43,45 +54,61 @@ const renderApp = () => {
 };
 
 describe('PageTwo', () => {
-  // describe('Back button', () => {
-  //   it('renders the next button wrapper and the button', async () => {
-  //     renderApp();
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.clearAllMocks();
+  });
 
-  //     const backButtonWrapper = await screen.findByTestId(
-  //       'back-button-wrapper'
-  //     );
-  //     const backButton = screen.queryByTestId('back-button');
+  describe('Back button', () => {
+    it('renders the next button wrapper and the button', async () => {
+      renderApp();
 
-  //     expect(backButtonWrapper).toBeVisible();
-  //     expect(backButton).toBeVisible();
-  //   });
-  // });
-  // describe('Progress bar', () => {
-  //   it('renders the progress bar with the first two bars highlighted', async () => {
-  //     renderApp();
+      const backButtonWrapper = await screen.findByTestId(
+        'back-button-wrapper'
+      );
+      const backButton = screen.queryByTestId('back-button');
 
-  //     const progressBar = await screen.findByTestId('progress-bar');
-  //     const progressBarItems =
-  //       within(progressBar).queryAllByTestId('progress-bar__item');
+      expect(backButtonWrapper).toBeVisible();
+      expect(backButton).toBeVisible();
+    });
 
-  //     expect(progressBarItems[1]).toHaveAttribute(
-  //       'style',
-  //       'background-color: rgb(118, 87, 191);'
-  //     );
-  //     expect(progressBarItems[1]).toHaveAttribute(
-  //       'style',
-  //       'background-color: rgb(118, 87, 191);'
-  //     );
-  //     expect(progressBarItems[2]).toHaveAttribute(
-  //       'style',
-  //       'background-color: rgb(242, 242, 242);'
-  //     );
-  //     expect(progressBarItems[3]).toHaveAttribute(
-  //       'style',
-  //       'background-color: rgb(242, 242, 242);'
-  //     );
-  //   });
-  // });
+    it('clicking the button goes back a page', async () => {
+      const user = userEvent.setup();
+      renderApp();
+
+      const backButton = await screen.findByTestId('back-button');
+      await user.click(backButton);
+
+      expect(mockNavigate).toHaveBeenCalledWith(-1);
+    });
+  });
+
+  describe('Progress bar', () => {
+    it('renders the progress bar with the first two bars highlighted', async () => {
+      renderApp();
+
+      const progressBar = await screen.findByTestId('progress-bar');
+      const progressBarItems =
+        within(progressBar).queryAllByTestId('progress-bar__item');
+
+      expect(progressBarItems[1]).toHaveAttribute(
+        'style',
+        'background-color: rgb(118, 87, 191);'
+      );
+      expect(progressBarItems[1]).toHaveAttribute(
+        'style',
+        'background-color: rgb(118, 87, 191);'
+      );
+      expect(progressBarItems[2]).toHaveAttribute(
+        'style',
+        'background-color: rgb(242, 242, 242);'
+      );
+      expect(progressBarItems[3]).toHaveAttribute(
+        'style',
+        'background-color: rgb(242, 242, 242);'
+      );
+    });
+  });
 
   describe('title', () => {
     it('renders the title with the name the user provided', async () => {
@@ -90,12 +117,12 @@ describe('PageTwo', () => {
       localStorage.getItem = vi.fn().mockImplementation(() => {
         return JSON.stringify(existingData);
       });
+
       renderApp();
 
       const title = await screen.findByRole('heading', { level: 1 });
 
       expect(title).toHaveTextContent('Dineshraj needs help with...');
-      vitest.restoreAllMocks();
     });
   });
 
@@ -132,18 +159,31 @@ describe('PageTwo', () => {
       expect(nextButton).toBeInTheDocument();
       expect(nextButton).not.toBeDisabled();
     });
+
+    it('calls navigate() with the right url', async () => {
+      const user = userEvent.setup();
+
+      renderApp();
+      await fillInFormCorrectly(user);
+
+      const nextButton = await screen.findByTestId('next-button-page-2');
+      expect(nextButton).toBeInTheDocument();
+
+      await user.click(nextButton);
+
+      expect(mockNavigate).toHaveBeenCalledWith('/details');
+    });
   });
 
   describe('localStorage', () => {
     it('Adds data to local storage when the form is submitted with all fields', async () => {
       const user = userEvent.setup();
 
-      const existingData = {name: 'IShouldNotExist'}
+      const existingData = { name: 'IShouldNotExist' };
 
-      localStorage.getItem = vi.fn().mockImplementation(() => {
+      localStorage.getItem = vi.fn().mockImplementationOnce(() => {
         return JSON.stringify(existingData);
       });
-
 
       renderApp();
       await fillInFormCorrectly(user);
@@ -156,7 +196,6 @@ describe('PageTwo', () => {
 
       //TODO don't hardcode these
       const expectedData = {
-        name: "IShouldNotExist",
         symptomItem: ['Speech and Communication']
       };
 

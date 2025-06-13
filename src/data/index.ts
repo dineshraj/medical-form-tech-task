@@ -25,7 +25,7 @@ export const childSymptomsList = [
     icon: 'symptoms04',
     activeIcon: 'symptoms10',
     name: 'Skin, Allergies, Sleep etc.',
-    info: 'Rashes, acne, distrubed sleep, dry skin...'
+    info: 'Rashes, acne, disturbed sleep, dry skin...'
   },
   {
     id: 'childSymptomsList05',
@@ -80,7 +80,7 @@ export const childSymptomsType = [
   },
   {
     symptoms: [
-      'Dry skin/ eczema',
+      'Dry skin / eczema',
       'Baby acne',
       'Cradle cap',
       'child has disturbed sleep',

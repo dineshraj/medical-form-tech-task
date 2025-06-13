@@ -1,10 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import SymptomItem from '../../../../src/components/Pages/PageTwo/Symptoms/SymptonItem';
 import { vi, vitest } from 'vitest';
-// import { ReactElement, ReactNode } from 'react';
-// import { zodResolver } from '@hookform/resolvers/zod';
-// import { FormProvider, useForm } from 'react-hook-form';
-// import { PageOneSchema } from '../../../../src/lib/schema';
 
 describe('SymptonItem', () => {
   beforeEach(() => {

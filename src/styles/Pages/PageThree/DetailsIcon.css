@@ -1,0 +1,19 @@
+.detail-item__icon {
+  width: 30px;
+}
+
+svg path.detail-icon__circle {
+  fill: #fff;
+}
+
+svg path.detail-icon__tick {
+  fill: transparent;
+}
+
+.detail-item__checkbox:checked + label svg .detail-icon__circle {
+  fill: #7158b9; /* Or whatever color */
+}
+
+.detail-item__checkbox:checked + label svg path.detail-icon__tick {
+  fill: white; /* Or whatever color */
+}

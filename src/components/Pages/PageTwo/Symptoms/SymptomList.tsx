@@ -9,12 +9,12 @@ interface SymptomListProps {
 
 const SymptomList = ({ data }: SymptomListProps) => {
   return (
-    <div className="symptom-list" data-testid="symptom-list">
+    <ul className="symptom-list" data-testid="symptom-list">
       {data &&
         data.map((symptom: SymptomItemProps) => {
           return <SymptomItem key={symptom.id} {...symptom} />;
         })}
-    </div>
+    </ul>
   );
 };
 

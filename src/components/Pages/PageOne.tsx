@@ -58,7 +58,7 @@ const PageOne = () => {
 
   return (
     <>
-      <BackButton page={1} />
+      <BackButton page={1}/>
       <ProgressBar sections={4} page={1} />
       <h1>{pageOne.title}</h1>
       <form

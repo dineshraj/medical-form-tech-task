@@ -13,8 +13,6 @@ export interface SymptomItemProps {
 const SymptomItem = ({ name, info, id }: SymptomItemProps) => {
   const { register } = useFormContext();
 
-  // TODO figuire out why the value isn't being sent
-
   return (
     <li data-id={id} className="symptom-item" data-testid="symptom-item">
       <input

@@ -6,7 +6,8 @@
   margin-bottom: 20px;
   background: none;
   border: none;
-  /* display: inline-block; */
+  cursor: pointer;
+  display: inline-block;
   text-align: left;
   position: relative;
   font-size: 16px;
@@ -15,6 +16,7 @@
   padding-top: 4px;
   font-weight: 400;
   letter-spacing: 1px;
+  width: 25%;
 }
 
 .back-button:active,
@@ -28,7 +30,7 @@
   border: none;
   background: none;
   position: absolute;
-  top: -10px;
+  top: -7px;
   left: 0;
   transform: translateY(50%);
 }

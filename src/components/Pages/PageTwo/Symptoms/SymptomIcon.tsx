@@ -1,6 +1,6 @@
 import '../../../../styles/Pages/PageTwo/SymptomIcon.css';
 
-const SymptomIcon = ({ fill }: { fill: string}) => (
+const SymptomIcon = ({ fill }: { fill: string }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     x="0px"
@@ -13,13 +13,7 @@ const SymptomIcon = ({ fill }: { fill: string}) => (
     <g>
       <g>
         <g>
-          <rect
-            x="38.384"
-            y="15.407"
-            fill={fill}
-            width="58.958"
-            height="4"
-          />
+          <rect x="38.384" y="15.407" fill={fill} width="58.958" height="4" />
         </g>
         <g>
           <polygon
@@ -59,6 +53,6 @@ const SymptomIcon = ({ fill }: { fill: string}) => (
       </g>
     </g>
   </svg>
-)
+);
 
 export default SymptomIcon;

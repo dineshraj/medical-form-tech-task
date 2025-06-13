@@ -1,5 +1,10 @@
-import userEvent, { UserEvent } from '@testing-library/user-event';
 import { render, screen, waitFor, within } from '@testing-library/react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { MemoryRouter } from 'react-router-dom';
+import { ReactElement, ReactNode } from 'react';
+import { vi } from 'vitest';
+import { zodResolver } from '@hookform/resolvers/zod';
+import userEvent, { UserEvent } from '@testing-library/user-event';
 import PageOne from '../../../src/components/Pages/PageOne';
 import {
   errorForThreeCharacters,
@@ -11,14 +16,8 @@ import {
   errorForDate,
   datePlaceholderText
 } from '../../../src/lib/lang';
-import { FORM_KEY } from '../../../src/App';
-
-import { FormProvider, useForm } from 'react-hook-form';
-import { MemoryRouter } from 'react-router-dom';
-import { ReactElement, ReactNode } from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { PageOneSchema } from '../../../src/lib/schema';
-import { vi } from 'vitest';
+import { FORM_KEY } from '../../../src/App';
 
 const mockNavigate = vi.fn();
 
@@ -125,6 +124,10 @@ const renderApp = () => {
 };
 
 describe('PageOne', () => {
+  afterAll(() => {
+    vi.restoreAllMocks();
+  });
+
   describe('Progress bar', () => {
     it('renders the progress bar with the first bar highlighted', async () => {
       renderApp();
@@ -621,6 +624,24 @@ describe('PageOne', () => {
       expect(nextButton).toBeInTheDocument();
       expect(nextButton).not.toBeDisabled();
     });
+
+    it('calls navigate() with the right url', async () => {
+      const user = userEvent.setup();
+
+      renderApp();
+      await fillInFormCorrectly(user, {
+        height: true,
+        weight: true,
+        ageCheck: 'yes'
+      });
+
+      const nextButton = await screen.findByTestId('next-button-page-1');
+      expect(nextButton).toBeInTheDocument();
+
+      await user.click(nextButton);
+
+      expect(mockNavigate).toHaveBeenCalledWith('/symptoms');
+    });
   });
 
   describe('Local storage', () => {
@@ -682,24 +703,6 @@ describe('PageOne', () => {
         FORM_KEY,
         JSON.stringify(expectedData)
       );
-    });
-
-    it('calls navigate() with the right url', async () => {
-      const user = userEvent.setup();
-
-      renderApp();
-      await fillInFormCorrectly(user, {
-        height: true,
-        weight: true,
-        ageCheck: 'yes'
-      });
-
-      const nextButton = await screen.findByTestId('next-button-page-1');
-      expect(nextButton).toBeInTheDocument();
-
-      await user.click(nextButton);
-
-      expect(mockNavigate).toHaveBeenCalledWith('/symptoms');
     });
   });
 });

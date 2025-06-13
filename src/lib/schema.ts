@@ -8,8 +8,7 @@ import {
   errorForAgeInput,
   errorForNumbers,
   errorForEmail,
-  errorForPhone,
-  errorForCheckList
+  errorForPhone
 } from './lang';
 
 export const PageOneSchema = z.object({
@@ -60,18 +59,14 @@ export const PageTwoSchema = z.object({
 });
 
 export const PageThreeSchema = z.object({
-  symptomDetails: z.array(z.string()).min(1)
+  detailsItem: z.array(z.string()).min(1)
 });
-
-export const combinedSchema = {
-  ...PageOneSchema.shape,
-  ...PageTwoSchema.shape
-};
 
 // TODO put this in a file and use the same routes in App.tsx
 export const schemaMap: Record<string, z.ZodTypeAny> = {
   '/': PageOneSchema,
-  '/symptoms': PageTwoSchema
+  '/symptoms': PageTwoSchema,
+  '/details': PageThreeSchema
 };
 
 export type PageOneT = z.infer<typeof PageOneSchema>;

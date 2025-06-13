@@ -1,0 +1,41 @@
+.detail-item {
+  align-items: center;
+  border: 1px solid #f2f2f2;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+
+.detail-item:has(.detail-item__checkbox:checked) {
+  background-color: #ece7f5;
+}
+
+.detail-item__label {
+  display: flex;
+  gap: 20px;
+  margin-top: 0;
+  padding: 15px 15px;
+  width: 100%;
+}
+
+.detail-item__checkbox {
+  display: none;
+}
+
+.detail-item__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+}
+
+.detail-item__name {
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  padding: 0;
+  margin: 0;
+}
+
+.detail-item__info {
+  font-size: 14px;
+}

@@ -29,6 +29,8 @@ describe('localStorage', () => {
       FORM_KEY,
       expectedDataInLocalStorage
     );
+
+    vi.restoreAllMocks();
   });
 
   it('retrieves values from localStorage', () => {
@@ -42,5 +44,7 @@ describe('localStorage', () => {
     const expectedValue = 'Alice';
 
     expect(retrievedValue).toBe(expectedValue);
+
+    vi.restoreAllMocks();
   });
 });

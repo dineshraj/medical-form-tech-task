@@ -1,58 +1,57 @@
 import BackButton from '../BackButton';
 import ProgressBar from '../ProgressBar/ProgressBar';
 
-import { pageTwo } from '../../lib/lang';
+import { pageTwo, secondPagePt2 } from '../../lib/lang';
 import { SubmitHandler, useFormContext, useFormState } from 'react-hook-form';
 import { PageTwoSchema, PageTwoT } from '../../lib/schema';
-// import { FORM_KEY } from '../../App';
 
 import { childSymptomsList } from '../../../src/data/';
 import SymptomList from './PageTwo/Symptoms/SymptomList';
 import NextButton from '../NextButton';
-import {
-  getFromLocalStorage,
-  updateLocalStorage
-} from '../../lib/localStorage';
-// import { useEffect } from 'react';
-// import { FORM_KEY } from '../../App';
-// import { getFromLocalStorate } from '../../lib/localStorage';
+import { updateLocalStorage } from '../../lib/localStorage';
+import { useNavigate } from 'react-router';
+
+import { getFromLocalStorage } from '../../lib/localStorage';
 
 const PageTwo = () => {
   const { control, handleSubmit /*, trigger */ } = useFormContext<PageTwoT>();
+  const navigate = useNavigate();
+
+
   const name = getFromLocalStorage('name');
+  const { isValid: formValid } = useFormState({ control });
+  // const errorMessage = errors['symptomItem']?.message as string;
 
-  // useEffect(() => {
-  //   trigger();
-  // }, []);
-
-  // // const name = localStorage.getItem(FORM_KEY).name;
-  const { errors, isValid: formValid } = useFormState({ control });
-  const errorMessage = errors['symptomItem']?.message as string;
+  const goBack = () => {
+    navigate(-1);
+  };
 
   const onSubmit: SubmitHandler<PageTwoT> = async (data: PageTwoT) => {
     const result = PageTwoSchema.safeParse(data);
 
     if (result.success) {
       updateLocalStorage(data);
-      // navigator(`/${thirdPage}`);
+      navigate(`/${secondPagePt2}`);
     }
   };
 
   return (
     <>
-      <BackButton page={2} />
+      <BackButton page={2} handleOnClick={goBack} />
       <ProgressBar sections={4} page={2} />
       <h1>{`${name} ${pageTwo.title}`}</h1>
-      <form
-        name="symptomForm"
-        className="form"
-        data-testid="page-two-form"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <SymptomList data={childSymptomsList} />
-        <NextButton disabled={!formValid} page={2} />
-      </form>
-      {errorMessage && <p className="error-text">{errorMessage}</p>}
+      {
+        <form
+          name="symptomForm"
+          className="form"
+          data-testid="page-two-form"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <SymptomList data={childSymptomsList} />
+          <NextButton disabled={!formValid} page={2} />
+        </form>
+      }
+      {/* {errorMessage && <p className="error-text">{errorMessage}</p>} */}
     </>
   );
 };
