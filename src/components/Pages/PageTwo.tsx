@@ -1,22 +1,22 @@
-import BackButton from '../BackButton';
-import ProgressBar from '../ProgressBar/ProgressBar';
-
-import { pageTwo, secondPagePt2 } from '../../lib/lang';
+import { useNavigate } from 'react-router';
 import { SubmitHandler, useFormContext, useFormState } from 'react-hook-form';
-import { PageTwoSchema, PageTwoT } from '../../lib/schema';
 
 import { childSymptomsList } from '../../../src/data/';
+import { pageTwo, secondPagePt2 } from '../../lib/lang';
+import { PageTwoSchema, PageTwoT } from '../../lib/schema';
+import {
+  updateLocalStorage,
+  getFromLocalStorage
+} from '../../lib/localStorage';
+
 import SymptomList from './PageTwo/Symptoms/SymptomList';
 import NextButton from '../NextButton';
-import { updateLocalStorage } from '../../lib/localStorage';
-import { useNavigate } from 'react-router';
-
-import { getFromLocalStorage } from '../../lib/localStorage';
+import BackButton from '../BackButton';
+import ProgressBar from '../ProgressBar/ProgressBar';
 
 const PageTwo = () => {
   const { control, handleSubmit /*, trigger */ } = useFormContext<PageTwoT>();
   const navigate = useNavigate();
-
 
   const name = getFromLocalStorage('name');
   const { isValid: formValid } = useFormState({ control });

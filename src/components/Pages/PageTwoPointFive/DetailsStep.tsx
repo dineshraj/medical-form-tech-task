@@ -1,5 +1,4 @@
 import { SubmitHandler } from 'react-hook-form';
-// import { pageThree } from '../../../lib/lang';
 
 import DetailsList from './DetailsList';
 
@@ -14,7 +13,6 @@ const DetailsStep = ({
   symptomDetails,
   submitHandler
 }: DetailsStepProps) => {
-  console.log('🚀 ~ symptomDetails:', symptomDetails);
   const { symptoms } = symptomDetails;
 
   return (

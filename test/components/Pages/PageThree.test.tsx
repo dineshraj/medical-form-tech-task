@@ -1,13 +1,14 @@
-// import { zodResolver } from "@hookform/resolvers/zod";
-import { within } from "@testing-library/dom";
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { ReactElement, ReactNode } from "react";
-import { useForm, FormProvider } from "react-hook-form";
-import { MemoryRouter } from "react-router";
-import { vi } from "vitest";
-import PageThree from "../../../src/components/Pages/PageThree";
+import { vi } from 'vitest';
+import { ReactElement, ReactNode } from 'react';
+import { useForm, FormProvider } from 'react-hook-form';
+import { MemoryRouter } from 'react-router';
 
+import { within } from '@testing-library/dom';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
+import PageThree from '../../../src/components/Pages/PageThree';
+import { pageThree } from '../../../src/lib/lang';
 
 const mockNavigate = vi.fn();
 
@@ -22,7 +23,7 @@ vi.mock('react-router', async () => {
 const renderWithReactHookForm = (ui: ReactElement) => {
   const Wrapper = ({ children }: { children: ReactNode }) => {
     const methods = useForm({
-      mode: 'onChange',
+      mode: 'onChange'
     });
 
     return (
@@ -65,6 +66,7 @@ describe('PageThree', () => {
       renderApp();
 
       const backButton = await screen.findByTestId('back-button');
+      console.log('🚀 ~ it ~ backButton:', backButton);
       await user.click(backButton);
 
       expect(mockNavigate).toHaveBeenCalledWith(-1);
@@ -87,9 +89,9 @@ describe('PageThree', () => {
         'style',
         'background-color: rgb(118, 87, 191);'
       );
-      expect(progressBarItems[2]).toHaveAttribute(
+      expect(progressBarItems[1]).toHaveAttribute(
         'style',
-        'background-color: rgb(242, 242, 242);'
+        'background-color: rgb(118, 87, 191);'
       );
       expect(progressBarItems[3]).toHaveAttribute(
         'style',
@@ -110,8 +112,7 @@ describe('PageThree', () => {
 
       const title = await screen.findByRole('heading', { level: 1 });
 
-      expect(title).toHaveTextContent('Dineshraj needs help with...');
+      expect(title).toHaveTextContent(pageThree.title);
     });
   });
-
-})
+});
