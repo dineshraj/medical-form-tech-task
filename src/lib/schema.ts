@@ -58,17 +58,30 @@ export const PageTwoSchema = z.object({
   symptomItem: z.array(z.string()).min(1)
 });
 
-export const PageThreeSchema = z.object({
+export const PageTwoPointFiveSchema = z.object({
   detailsItem: z.array(z.string()).min(1)
 });
+
+export const PageThreeSchema = z.object({
+  otherInfo: z.string().optional()
+});
+
+export const PageFourSchema = z.object({
+  otherInfo: z.string().optional()
+});
+
 
 // TODO put this in a file and use the same routes in App.tsx
 export const schemaMap: Record<string, z.ZodTypeAny> = {
   '/': PageOneSchema,
   '/symptoms': PageTwoSchema,
-  '/details': PageThreeSchema
+  '/details': PageTwoPointFiveSchema,
+  '/other': PageThreeSchema,
+  '/appointment': PageFourSchema,
 };
 
 export type PageOneT = z.infer<typeof PageOneSchema>;
 export type PageTwoT = z.infer<typeof PageTwoSchema>;
+export type PageTwoPointFiveT = z.infer<typeof PageTwoPointFiveSchema>;
 export type PageThreeT = z.infer<typeof PageThreeSchema>;
+export type PageFourT = z.infer<typeof PageFourSchema>;

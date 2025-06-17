@@ -21,8 +21,10 @@ export const pageTwoPointFive = {
 };
 
 export const pageThree = {
-  title: "Any other information you'd like us to know?"
-}
+  title: "Any other information you'd like us to know?",
+  placeholder:
+    'Mention any medical history, family history, any incident which caused concern, food and sleep routine'
+};
 
 export const next = 'Next';
 export const back = 'Back';
@@ -38,6 +40,8 @@ export const datePlaceholderText = 'Click to select a date';
 export const errorForCheckList =
   'Select at least one, you know your child has problems fam';
 
+// TODO move this to another file
 export const secondPage = 'symptoms';
 export const secondPagePt2 = 'details';
-export const thirdhPage = 'other';
+export const thirdPage = 'other';
+export const fourthPage = 'appointment';

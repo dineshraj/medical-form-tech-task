@@ -9,6 +9,7 @@ import userEvent from '@testing-library/user-event';
 
 import PageThree from '../../../src/components/Pages/PageThree';
 import { pageThree } from '../../../src/lib/lang';
+import { FORM_KEY } from '../../../src/App';
 
 const mockNavigate = vi.fn();
 
@@ -66,7 +67,6 @@ describe('PageThree', () => {
       renderApp();
 
       const backButton = await screen.findByTestId('back-button');
-      console.log('🚀 ~ it ~ backButton:', backButton);
       await user.click(backButton);
 
       expect(mockNavigate).toHaveBeenCalledWith(-1);
@@ -113,6 +113,79 @@ describe('PageThree', () => {
       const title = await screen.findByRole('heading', { level: 1 });
 
       expect(title).toHaveTextContent(pageThree.title);
+    });
+  });
+
+  describe('textarea', () => {
+    it('renders the textarea', async () => {
+      renderApp();
+
+      const textarea = await screen.findByTestId('other-info');
+
+      expect(textarea).toBeVisible();
+    });
+  });
+
+  describe('Next button', () => {
+    it('renders the next button as active by default', async () => {
+
+      renderApp();
+
+
+
+      const nextButton = await screen.findByTestId('next-button-page-3');
+
+      expect(nextButton).toBeInTheDocument();
+      expect(nextButton).not.toBeDisabled();
+    });
+
+    it('calls navigate() with the right url', async () => {
+      const user = userEvent.setup();
+
+      renderApp(); // child name
+      const input = (await screen.findByTestId(
+        'other-info'
+      )) as HTMLInputElement;
+
+      await user.type(input, 'anakin');
+
+      const nextButton = await screen.findByTestId('next-button-page-3');
+      expect(nextButton).toBeInTheDocument();
+
+      await user.click(nextButton);
+
+      expect(mockNavigate).toHaveBeenCalledWith('/appointment');
+    });
+  });
+
+  describe('localStorage', () => {
+    it('Adds data to local storage when the form is submitted with all fields', async () => {
+      const user = userEvent.setup();
+
+      renderApp();
+
+      const input = (await screen.findByTestId(
+        'other-info'
+      )) as HTMLInputElement;
+
+      await user.type(input, 'anakin');
+
+      const nextButton = await screen.findByTestId('next-button-page-3');
+
+      expect(nextButton).toBeInTheDocument();
+
+      await user.click(nextButton);
+
+      //TODO don't hardcode these
+      const expectedData = {
+        otherInfo: 'anakin'
+      };
+
+      expect(nextButton).not.toBeDisabled();
+      expect(localStorage.setItem).toHaveBeenCalledWith(
+        FORM_KEY,
+        JSON.stringify(expectedData)
+      );
     });
   });
 });

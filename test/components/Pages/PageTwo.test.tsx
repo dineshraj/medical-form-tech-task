@@ -142,7 +142,7 @@ describe('PageTwo', () => {
     it('renders the next button as disabled by default', async () => {
       renderApp();
 
-      const nextButton = await screen.findByTestId('next-button-page-2');
+      const nextButton = await screen.findByTestId('next-button-page-25');
 
       expect(nextButton).toBeInTheDocument();
       expect(nextButton).toBeDisabled();
@@ -154,7 +154,7 @@ describe('PageTwo', () => {
 
       await fillInFormCorrectly(user);
 
-      const nextButton = await screen.findByTestId('next-button-page-2');
+      const nextButton = await screen.findByTestId('next-button-page-25');
 
       expect(nextButton).toBeInTheDocument();
       expect(nextButton).not.toBeDisabled();
@@ -166,7 +166,7 @@ describe('PageTwo', () => {
       renderApp();
       await fillInFormCorrectly(user);
 
-      const nextButton = await screen.findByTestId('next-button-page-2');
+      const nextButton = await screen.findByTestId('next-button-page-25');
       expect(nextButton).toBeInTheDocument();
 
       await user.click(nextButton);
@@ -188,7 +188,7 @@ describe('PageTwo', () => {
       renderApp();
       await fillInFormCorrectly(user);
 
-      const nextButton = await screen.findByTestId('next-button-page-2');
+      const nextButton = await screen.findByTestId('next-button-page-25');
 
       expect(nextButton).toBeInTheDocument();
 

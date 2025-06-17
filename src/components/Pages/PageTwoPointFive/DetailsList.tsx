@@ -1,9 +1,9 @@
 import DetailsItem from './DetailsItem';
 
-import '../../../styles/Pages/PageThree/DetailList.css';
+import '../../../styles/Pages/PageTwoPointFive/DetailList.css';
 import NextButton from '../../NextButton';
 import { SubmitHandler, useFormContext, useFormState } from 'react-hook-form';
-import { PageThreeT } from '../../../lib/schema';
+import { PageTwoPointFiveT } from '../../../lib/schema';
 
 interface DetailsListProps {
   symptomDetails: string[];
@@ -11,7 +11,7 @@ interface DetailsListProps {
 }
 
 const DetailsList = ({ symptomDetails, submitHandler }: DetailsListProps) => {
-  const { control, handleSubmit /*, trigger */ } = useFormContext<PageThreeT>();
+  const { control, handleSubmit /*, trigger */ } = useFormContext<PageTwoPointFiveT>();
   const { isValid: formValid } = useFormState({ control });
 
   return (
@@ -26,7 +26,7 @@ const DetailsList = ({ symptomDetails, submitHandler }: DetailsListProps) => {
           return <DetailsItem key={i} index={i} detail={symptomDetail} />;
         })}
       </ul>
-      <NextButton disabled={!formValid} page={3} />
+      <NextButton disabled={!formValid} page={25} />
     </form>
   );
 };

@@ -1,4 +1,4 @@
-import '../../../styles/Pages/PageThree/DetailsIcon.css';
+import '../../../styles/Pages/PageTwoPointFive//DetailsIcon.css';
 
 const DetailIcon = () => (
   <svg

@@ -1,7 +1,7 @@
 import { useFormContext } from 'react-hook-form';
 import DetailsIcon from './DetailsIcon';
 
-import '../../../styles/Pages//PageThree/DetailItem.css';
+import '../../../styles/Pages//PageTwoPointFive/DetailItem.css';
 
 export interface DetailsItemProps {
   detail: string;

@@ -4,8 +4,8 @@ import { render, screen } from '@testing-library/react';
 import { ReactElement, ReactNode } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { MemoryRouter } from 'react-router-dom';
-import PageThree from '../../../src/components/Pages/PageTwoPointFive';
-import { PageThreeSchema } from '../../../src/lib/schema';
+import PageTwoPointFive from '../../../src/components/Pages/PageTwoPointFive';
+import { PageTwoPointFiveSchema } from '../../../src/lib/schema';
 import { vi } from 'vitest';
 import userEvent, { UserEvent } from '@testing-library/user-event';
 import { FORM_KEY } from '../../../src/App';
@@ -39,7 +39,7 @@ const renderWithReactHookForm = (ui: ReactElement) => {
   const Wrapper = ({ children }: { children: ReactNode }) => {
     const methods = useForm({
       mode: 'onChange',
-      resolver: zodResolver(PageThreeSchema)
+      resolver: zodResolver(PageTwoPointFiveSchema)
     });
 
     return (
@@ -55,7 +55,7 @@ const renderWithReactHookForm = (ui: ReactElement) => {
 };
 
 const renderApp = () => {
-  renderWithReactHookForm(<PageThree />);
+  renderWithReactHookForm(<PageTwoPointFive />);
 };
 
 const existingData = {
@@ -74,7 +74,7 @@ const fillInFormCorrectly = async (user: UserEvent) => {
   await user.click(firstLabel);
 };
 
-describe('PageThree', () => {
+describe('PageTwoPointFive', () => {
   beforeEach(() => {
     localStorage.getItem = vi.fn().mockImplementation(() => {
       return JSON.stringify(existingData[FORM_KEY]);
@@ -171,7 +171,7 @@ describe('PageThree', () => {
 
       const input = screen.getByText('Being too slow');
       await user.click(input);
-      const nextButton = screen.getByTestId('next-button-page-3');
+      const nextButton = screen.getByTestId('next-button-page-25');
       await user.click(nextButton);
       title = await screen.findByRole('heading', { level: 1 });
 
@@ -186,7 +186,7 @@ describe('PageThree', () => {
     it('renders the next button as disabled by default', async () => {
       renderApp();
 
-      const nextButton = await screen.findByTestId('next-button-page-3');
+      const nextButton = await screen.findByTestId('next-button-page-25');
 
       expect(nextButton).toBeInTheDocument();
       expect(nextButton).toBeDisabled();
@@ -198,7 +198,7 @@ describe('PageThree', () => {
 
       await fillInFormCorrectly(user);
 
-      const nextButton = await screen.findByTestId('next-button-page-3');
+      const nextButton = await screen.findByTestId('next-button-page-25');
 
       expect(nextButton).toBeInTheDocument();
       expect(nextButton).not.toBeDisabled();
@@ -208,7 +208,7 @@ describe('PageThree', () => {
       // const user = userEvent.setup();
       // renderApp();
       // await fillInFormCorrectly(user);
-      // const nextButton = await screen.findByTestId('next-button-page-3');
+      // const nextButton = await screen.findByTestId('next-button-page-25');
       // expect(nextButton).toBeInTheDocument();
       // await user.click(nextButton);
       // expect(mockNavigate).toHaveBeenCalledWith('/details');

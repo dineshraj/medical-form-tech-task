@@ -48,7 +48,7 @@ const PageTwo = () => {
           onSubmit={handleSubmit(onSubmit)}
         >
           <SymptomList data={childSymptomsList} />
-          <NextButton disabled={!formValid} page={2} />
+          <NextButton disabled={!formValid} page={25} />
         </form>
       }
       {/* {errorMessage && <p className="error-text">{errorMessage}</p>} */}

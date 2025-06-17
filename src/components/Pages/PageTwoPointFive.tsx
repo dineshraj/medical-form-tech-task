@@ -9,8 +9,8 @@ import DetailsStep from './PageTwoPointFive/DetailsStep';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { SubmitHandler } from 'react-hook-form';
-import { PageThreeSchema, PageThreeT } from '../../lib/schema';
-import { thirdhPage, pageTwoPointFive } from '../../lib/lang';
+import { PageTwoPointFiveSchema, PageTwoPointFiveT } from '../../lib/schema';
+import { thirdPage, pageTwoPointFive } from '../../lib/lang';
 
  //! TODO make each step of PageTwoPointFive have a subroute so the back button works properly on Page 3
 
@@ -34,8 +34,8 @@ const PageTwoPointFive = () => {
     return step === symptomItems.length - 1;
   };
 
-  const onSubmit: SubmitHandler<PageThreeT> = async (data: PageThreeT) => {
-    const result = PageThreeSchema.safeParse(data);
+  const onSubmit: SubmitHandler<PageTwoPointFiveT> = async (data: PageTwoPointFiveT) => {
+    const result = PageTwoPointFiveSchema.safeParse(data);
 
     const updatedData = {
       detailsItem: {
@@ -47,7 +47,7 @@ const PageTwoPointFive = () => {
       updateLocalStorage(updatedData);
 
       if (hasNoMoreSteps()) {
-        navigate(`/${thirdhPage}`);
+        navigate(`/${thirdPage}`);
       } else {
         setStep((prevStep) => prevStep + 1);
       }
