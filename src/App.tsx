@@ -13,6 +13,7 @@ import { z } from 'zod';
 import { schemaMap } from './lib/schema';
 import { useLocation } from 'react-router-dom';
 import PageThree from './components/Pages/PageThree';
+import PageFour from './components/Pages/PageFour';
 
 function App() {
   const location = useLocation();
@@ -61,6 +62,7 @@ function App() {
               <Route path="/symptoms" element={<PageTwo />} />
               <Route path="/details" element={<PageTwoPointFive />} />
               <Route path="/other" element={<PageThree />} />
+              <Route path="/appointment" element={<PageFour />} />
             </Route>
           </Routes>
         </FormProvider>

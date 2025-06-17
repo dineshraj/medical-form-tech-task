@@ -91,7 +91,7 @@ describe('PageTwo', () => {
       const progressBarItems =
         within(progressBar).queryAllByTestId('progress-bar__item');
 
-      expect(progressBarItems[1]).toHaveAttribute(
+      expect(progressBarItems[0]).toHaveAttribute(
         'style',
         'background-color: rgb(118, 87, 191);'
       );

@@ -26,6 +26,11 @@ export const pageThree = {
     'Mention any medical history, family history, any incident which caused concern, food and sleep routine'
 };
 
+export const pageFour = {
+  title: 'Schedule an appointment',
+  appointment: "Select Date"
+};
+
 export const next = 'Next';
 export const back = 'Back';
 export const errorForThreeCharacters = 'Please enter at least three characters';

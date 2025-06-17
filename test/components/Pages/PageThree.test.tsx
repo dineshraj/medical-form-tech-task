@@ -81,7 +81,7 @@ describe('PageThree', () => {
       const progressBarItems =
         within(progressBar).queryAllByTestId('progress-bar__item');
 
-      expect(progressBarItems[1]).toHaveAttribute(
+      expect(progressBarItems[0]).toHaveAttribute(
         'style',
         'background-color: rgb(118, 87, 191);'
       );
@@ -89,7 +89,7 @@ describe('PageThree', () => {
         'style',
         'background-color: rgb(118, 87, 191);'
       );
-      expect(progressBarItems[1]).toHaveAttribute(
+      expect(progressBarItems[2]).toHaveAttribute(
         'style',
         'background-color: rgb(118, 87, 191);'
       );
@@ -128,10 +128,7 @@ describe('PageThree', () => {
 
   describe('Next button', () => {
     it('renders the next button as active by default', async () => {
-
       renderApp();
-
-
 
       const nextButton = await screen.findByTestId('next-button-page-3');
 
