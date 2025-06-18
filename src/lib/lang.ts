@@ -28,7 +28,7 @@ export const pageThree = {
 
 export const pageFour = {
   title: 'Schedule an appointment',
-  appointment: "Select Date"
+  appointment: 'Select Date'
 };
 
 export const next = 'Next';
@@ -36,8 +36,9 @@ export const back = 'Back';
 export const errorForThreeCharacters = 'Please enter at least three characters';
 export const errorForNumbers = 'Please only enter a numeric value';
 export const errorForAge = 'Please select a value';
-export const errorForAgeInput = 'Enter a number under 37';
 export const errorForDate = 'Date must be in the past';
+export const errorForFutureDate = 'Date must be in the Future';
+export const errorForAgeInput = 'Enter a number under 37';
 export const errorForEmail = 'Please enter a valid email';
 export const errorForName = 'Unless you are Elon, enter goddamn letters';
 export const errorForPhone = 'That is not a phone number';
@@ -50,3 +51,4 @@ export const secondPage = 'symptoms';
 export const secondPagePt2 = 'details';
 export const thirdPage = 'other';
 export const fourthPage = 'appointment';
+export const fifthPage = 'success';

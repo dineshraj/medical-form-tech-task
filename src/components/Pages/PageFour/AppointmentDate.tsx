@@ -12,10 +12,11 @@ interface DateOfBirthProps {
 }
 
 const AppointmentDate = ({ value, onChange, error }: DateOfBirthProps) => {
+  console.log('🚀 ~ AppointmentDate ~ error:', error);
   const errorMessage = error ? error.message : null;
 
   return (
-    <label htmlFor="appointment-date" data-testid="appointment-label">
+    <label htmlFor="appointmentDate" data-testid="appointment-label">
       <div className="title">{pageFour.appointment}</div>
       <DatePicker
         wrapperClassName="date-picker"
@@ -24,7 +25,7 @@ const AppointmentDate = ({ value, onChange, error }: DateOfBirthProps) => {
         placeholderText={datePlaceholderText}
         onChange={onChange}
         dateFormat="MMMM do YYYY"
-        id="appointment-date"
+        id="appointmentDate"
         showIcon={true}
       />
       {errorMessage && <ErrorMessage error={errorMessage} />}

@@ -13,7 +13,6 @@ import {
   errorForEmail,
   errorForName,
   errorForPhone,
-  errorForDate,
   datePlaceholderText
 } from '../../../src/lib/lang';
 import { PageOneSchema } from '../../../src/lib/schema';
@@ -259,26 +258,6 @@ describe('PageOne', () => {
         within(datePickerLabel).queryByPlaceholderText(datePlaceholderText);
 
       expect(datePicker).toBeInTheDocument();
-    });
-
-    it.skip('shows error message when a future date is entered', async () => {
-      const user = userEvent.setup();
-
-      renderApp();
-
-      const dateLabel = await screen.findByTestId('date-of-birth-label');
-      const dateInput = within(dateLabel).getByPlaceholderText(
-        datePlaceholderText
-      ) as HTMLInputElement;
-
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
-
-      dateInput.value = tomorrow.toString();
-
-      await user.type(dateInput, tomorrow.toString());
-
-      expect(dateLabel).toHaveTextContent(errorForDate);
     });
   });
 

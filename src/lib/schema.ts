@@ -8,7 +8,8 @@ import {
   errorForAgeInput,
   errorForNumbers,
   errorForEmail,
-  errorForPhone
+  errorForPhone,
+  errorForFutureDate
 } from './lang';
 
 export const PageOneSchema = z.object({
@@ -67,9 +68,10 @@ export const PageThreeSchema = z.object({
 });
 
 export const PageFourSchema = z.object({
-  otherInfo: z.string().optional()
+  appointmentDate: z.coerce
+    .date()
+    .refine((date) => date > new Date(), { message: errorForFutureDate })
 });
-
 
 // TODO put this in a file and use the same routes in App.tsx
 export const schemaMap: Record<string, z.ZodTypeAny> = {
@@ -77,7 +79,7 @@ export const schemaMap: Record<string, z.ZodTypeAny> = {
   '/symptoms': PageTwoSchema,
   '/details': PageTwoPointFiveSchema,
   '/other': PageThreeSchema,
-  '/appointment': PageFourSchema,
+  '/appointment': PageFourSchema
 };
 
 export type PageOneT = z.infer<typeof PageOneSchema>;

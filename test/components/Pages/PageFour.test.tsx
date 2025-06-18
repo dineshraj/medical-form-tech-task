@@ -4,16 +4,38 @@ import { ReactElement, ReactNode } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { MemoryRouter } from 'react-router-dom';
 import { vi } from 'vitest';
-import { datePlaceholderText, errorForDate, pageFour } from '../../../src/lib/lang';
-import { PageTwoSchema } from '../../../src/lib/schema';
+import { datePlaceholderText, pageFour } from '../../../src/lib/lang';
+import { PageFourSchema } from '../../../src/lib/schema';
 import PageFour from '../../../src/components/Pages/PageFour';
-import userEvent from '@testing-library/user-event';
+import userEvent, { UserEvent } from '@testing-library/user-event';
+
+const mockNavigate = vi.fn();
+
+vi.mock('react-router', async () => {
+  const original = await vi.importActual('react-router');
+  return {
+    ...original,
+    useNavigate: () => mockNavigate
+  };
+});
+
+const fillInFormCorrectly = async (user: UserEvent) => {
+  // appointment date
+  const appointmentLabel = await screen.findByTestId('appointment-label');
+  const datePicker = within(appointmentLabel).queryByPlaceholderText(
+    datePlaceholderText
+  ) as unknown as HTMLElement;
+
+  await user.click(datePicker);
+  //TODO this is brittle if other options are on the page in the future
+  await user.click(screen.getAllByRole('option')[27]);
+};
 
 const renderWithReactHookForm = (ui: ReactElement) => {
   const Wrapper = ({ children }: { children: ReactNode }) => {
     const methods = useForm({
       mode: 'onChange',
-      resolver: zodResolver(PageTwoSchema)
+      resolver: zodResolver(PageFourSchema)
     });
 
     return (
@@ -32,14 +54,14 @@ const renderApp = () => {
   renderWithReactHookForm(<PageFour />);
 };
 
-describe('PageOne', () => {
+describe('PageFour', () => {
   afterEach(() => {
     vi.restoreAllMocks();
     vi.clearAllMocks();
   });
 
   describe('Progress bar', () => {
-    it('renders the progress bar with the first bar highlighted', async () => {
+    it('renders the progress bar with all the bars highlighted', async () => {
       renderApp();
 
       const progressBar = await screen.findByTestId('progress-bar');
@@ -88,8 +110,8 @@ describe('PageOne', () => {
     });
   });
 
-    describe('Appointment date', () => {
-    it('renders the date label', async () => {
+  describe('Appointment date', () => {
+    it('renders the appointment label', async () => {
       renderApp();
       const appDateLabel = await screen.findByTestId('appointment-label');
 
@@ -106,25 +128,42 @@ describe('PageOne', () => {
 
       expect(datePicker).toBeInTheDocument();
     });
+  });
 
-    it.skip('shows error message when a future date is entered', async () => {
-      const user = userEvent.setup();
-
+  describe('Next button', () => {
+    it('renders the next button as disabled by default', async () => {
       renderApp();
 
-      const dateLabel = await screen.findByTestId('appointment-label');
-      const dateInput = within(dateLabel).getByPlaceholderText(
-        datePlaceholderText
-      ) as HTMLInputElement;
+      const nextButton = await screen.findByTestId('next-button-page-4');
 
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
+      expect(nextButton).toBeInTheDocument();
+      expect(nextButton).toBeDisabled();
+    });
 
-      dateInput.value = tomorrow.toString();
+    it('renders the next button as active when the correct values are entered for all required fields', async () => {
+      const user = userEvent.setup();
+      renderApp();
 
-      await user.type(dateInput, tomorrow.toString());
+      await fillInFormCorrectly(user);
 
-      expect(dateLabel).toHaveTextContent(errorForDate);
+      const nextButton = await screen.findByTestId('next-button-page-4');
+
+      expect(nextButton).toBeInTheDocument();
+      expect(nextButton).not.toBeDisabled();
+    });
+
+    it('calls navigate() with the right url', async () => {
+      const user = userEvent.setup();
+      renderApp();
+
+      await fillInFormCorrectly(user);
+
+      const nextButton = await screen.findByTestId('next-button-page-4');
+      expect(nextButton).toBeInTheDocument();
+
+      await user.click(nextButton);
+
+      expect(mockNavigate).toHaveBeenCalledWith('/success');
     });
   });
 });
