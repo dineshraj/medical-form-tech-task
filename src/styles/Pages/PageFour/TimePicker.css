@@ -1,0 +1,45 @@
+.time-picker {
+  display: flex;
+}
+
+.react-datepicker-wrapper {
+  position: relative;
+}
+
+.react-datepicker-wrapper.time-picker {
+  display: block;
+}
+
+.time-picker
+  .react-datepicker__input-container
+  .react-datepicker__calendar-icon {
+  position: absolute;
+  right: 0;
+  top: 3px;
+  font-size: 15px;
+  right: 5px;
+}
+
+.time-picker .react-datepicker__view-calendar-icon input {
+  padding: 10px;
+  padding-left: 8px;
+}
+
+.time-picker .react-datepicker__view-calendar-icon input::placeholder {
+  color: #cfcfcf;
+}
+
+.react-datepicker.react-datepicker--time-only {
+  width: 200px;
+}
+
+.react-datepicker__time-container {
+  float: inherit;
+  width: auto;
+}
+
+.react-datepicker__time-container
+  .react-datepicker__time
+  .react-datepicker__time-box {
+  width: auto;
+}

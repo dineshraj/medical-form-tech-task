@@ -4,7 +4,11 @@ import { ReactElement, ReactNode } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { MemoryRouter } from 'react-router-dom';
 import { vi } from 'vitest';
-import { datePlaceholderText, pageFour } from '../../../src/lib/lang';
+import {
+  datePlaceholderText,
+  pageFour,
+  timePlaceholderText
+} from '../../../src/lib/lang';
 import { PageFourSchema } from '../../../src/lib/schema';
 import PageFour from '../../../src/components/Pages/PageFour';
 import userEvent, { UserEvent } from '@testing-library/user-event';
@@ -29,6 +33,18 @@ const fillInFormCorrectly = async (user: UserEvent) => {
   await user.click(datePicker);
   //TODO this is brittle if other options are on the page in the future
   await user.click(screen.getAllByRole('option')[27]);
+
+  // appointment time
+  const appointmentTimeLabel = await screen.findByTestId(
+    'appointment-time-label'
+  );
+  const timePicker = within(appointmentTimeLabel).queryByPlaceholderText(
+    timePlaceholderText
+  ) as unknown as HTMLElement;
+
+  await user.click(timePicker);
+  //TODO this is brittle if the tests are run at a certain time
+  await user.click(screen.getAllByRole('option')[87]);
 };
 
 const renderWithReactHookForm = (ui: ReactElement) => {
@@ -128,6 +144,27 @@ describe('PageFour', () => {
 
       expect(datePicker).toBeInTheDocument();
     });
+  });
+
+  describe('Appointment date', () => {
+    it('renders the time label', async () => {
+      renderApp();
+      const appDateLabel = await screen.findByTestId('appointment-label');
+
+      expect(appDateLabel).toBeInTheDocument();
+      expect(appDateLabel.textContent).toBe(pageFour.appointment);
+    });
+
+    it('renders the date picker library', async () => {
+      renderApp();
+      const callType = await screen.findByTestId('call-type');
+
+      expect(callType).toBeInTheDocument();
+    });
+  });
+
+  describe('Call Type', () => {
+    it('renders the call type options', () => {});
   });
 
   describe('Next button', () => {

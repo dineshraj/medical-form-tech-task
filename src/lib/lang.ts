@@ -28,7 +28,9 @@ export const pageThree = {
 
 export const pageFour = {
   title: 'Schedule an appointment',
-  appointment: 'Select Date'
+  appointment: 'Select date',
+  time: 'Select time',
+  callType: 'Call type'
 };
 
 export const next = 'Next';
@@ -43,6 +45,7 @@ export const errorForEmail = 'Please enter a valid email';
 export const errorForName = 'Unless you are Elon, enter goddamn letters';
 export const errorForPhone = 'That is not a phone number';
 export const datePlaceholderText = 'Click to select a date';
+export const timePlaceholderText = 'Click to select a time';
 export const errorForCheckList =
   'Select at least one, you know your child has problems fam';
 

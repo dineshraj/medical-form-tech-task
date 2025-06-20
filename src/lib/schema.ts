@@ -70,7 +70,11 @@ export const PageThreeSchema = z.object({
 export const PageFourSchema = z.object({
   appointmentDate: z.coerce
     .date()
-    .refine((date) => date > new Date(), { message: errorForFutureDate })
+    .refine((date) => date > new Date(), { message: errorForFutureDate }),
+  appointmentTime: z.coerce
+    .date()
+    .refine((date) => date > new Date(), { message: errorForFutureDate }),
+  callType: z.string()
 });
 
 // TODO put this in a file and use the same routes in App.tsx

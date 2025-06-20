@@ -14,9 +14,11 @@ import NextButton from '../NextButton';
 import 'react-datepicker/dist/react-datepicker.css';
 import { updateLocalStorage } from '../../lib/localStorage';
 import { useNavigate } from 'react-router';
+import TimePickerWrapper from './PageFour/TimePicker';
+import CallType from './PageFour/CallType';
 
 const PageFour = () => {
-  const { control, handleSubmit } = useFormContext<PageFourT>();
+  const { control, handleSubmit, register } = useFormContext<PageFourT>();
   const navigate = useNavigate();
   const { errors, isValid: formValid } = useFormState({ control });
   console.log('🚀 ~ PageFour ~ errors:', errors);
@@ -24,7 +26,10 @@ const PageFour = () => {
 
   const onSubmit: SubmitHandler<PageFourT> = async (data: PageFourT) => {
     const result = PageFourSchema.safeParse(data);
-    console.log("🚀 ~ constonSubmit:SubmitHandler<PageFourT>= ~ result:", result)
+    console.log(
+      '🚀 ~ constonSubmit:SubmitHandler<PageFourT>= ~ result:',
+      result
+    );
 
     if (result.success) {
       updateLocalStorage(data);
@@ -41,15 +46,31 @@ const PageFour = () => {
         data-testid="page-four-form"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <Controller
-          name="appointmentDate"
-          control={control}
-          render={({ field }) => {
-            return (
-              <AppointmentDate {...field} error={errors['appointmentDate']} />
-            );
-          }}
-        />
+        <div>
+          <Controller
+            name="appointmentDate"
+            control={control}
+            render={({ field }) => {
+              return (
+                <AppointmentDate {...field} error={errors['appointmentDate']} />
+              );
+            }}
+          />
+          <Controller
+            name="appointmentTime"
+            control={control}
+            render={({ field }) => {
+              return (
+                <TimePickerWrapper
+                  {...field}
+                  error={errors['appointmentTime']}
+                />
+              );
+            }}
+          />
+          <CallType registered={register('callType')} />
+        </div>
+
         <NextButton disabled={!formValid} page={4} />
       </form>
     </>
