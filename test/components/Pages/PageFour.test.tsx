@@ -45,6 +45,10 @@ const fillInFormCorrectly = async (user: UserEvent) => {
   await user.click(timePicker);
   //TODO this is brittle if the tests are run at a certain time
   await user.click(screen.getAllByRole('option')[87]);
+
+  // call type
+  const videoCall = screen.getByTestId('video-call')
+  await user.click(videoCall);
 };
 
 const renderWithReactHookForm = (ui: ReactElement) => {

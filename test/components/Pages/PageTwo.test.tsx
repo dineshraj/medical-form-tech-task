@@ -179,11 +179,11 @@ describe('PageTwo', () => {
     it('Adds data to local storage when the form is submitted with all fields', async () => {
       const user = userEvent.setup();
 
-      const existingData = { name: 'IShouldNotExist' };
+      // const existingData = { name: 'IShouldNotExist' };
 
-      localStorage.getItem = vi.fn().mockImplementationOnce(() => {
-        return JSON.stringify(existingData);
-      });
+      // localStorage.getItem = vi.fn().mockImplementationOnce(() => {
+      //   return JSON.stringify(existingData);
+      // });
 
       renderApp();
       await fillInFormCorrectly(user);

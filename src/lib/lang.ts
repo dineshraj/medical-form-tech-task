@@ -33,6 +33,10 @@ export const pageFour = {
   callType: 'Call type'
 };
 
+export const pageFive = {
+  title: 'Scheduled successfully!'
+};
+
 export const next = 'Next';
 export const back = 'Back';
 export const errorForThreeCharacters = 'Please enter at least three characters';

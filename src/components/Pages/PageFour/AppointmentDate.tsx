@@ -13,7 +13,6 @@ interface DateOfBirthProps {
 
 const AppointmentDate = ({ value, onChange, error }: DateOfBirthProps) => {
   // TODO why doesn't this error work?
-  console.log('🚀 ~ AppointmentDate ~ error:', error);
   const errorMessage = error ? error.message : null;
 
   return (

@@ -5,6 +5,10 @@
   border-radius: 10px;
 } */
 
+.call-type {
+  margin-top: 18px;
+}
+
 .call-type-options:has(.call-type-options__radio:checked) {
   background-color: #ece7f5;
 }
@@ -24,6 +28,10 @@
 
 .call-type-options__radio {
   display: none;
+}
+
+.call-type__title {
+  font-size: 14px;
 }
 
 .call-type-list {

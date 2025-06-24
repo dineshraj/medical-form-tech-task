@@ -11,7 +11,7 @@ interface CallTypeProps {
 const CallType = ({registered} : CallTypeProps) => {
   return (
     <div className="call-type" data-testid="call-type">
-      <div className="title" data-testid="title">
+      <div className="title call-type__title" data-testid="title">
         {pageFour.callType}
       </div>
       <ul className="call-type-list">
@@ -23,11 +23,12 @@ const CallType = ({registered} : CallTypeProps) => {
 
           <input
             type="radio"
+            data-testid="video-call"
             id="call-type-video"
             className="call-type-options__radio"
             {...registered}
             name="callType"
-            value="Video call"
+            value="video call"
           />
         </li>
         <li data-testid="call-type-options" className="call-type-options">
@@ -41,7 +42,7 @@ const CallType = ({registered} : CallTypeProps) => {
             id="call-type-audio"
             {...registered}
             name="callType"
-            value="Audio call"
+            value="audio call"
           />
         </li>
       </ul>

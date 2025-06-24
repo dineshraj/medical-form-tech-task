@@ -3,6 +3,9 @@ import Pages from './components/Pages';
 import PageOne from './components/Pages/PageOne';
 import PageTwo from './components/Pages/PageTwo';
 import PageTwoPointFive from './components/Pages/PageTwoPointFive';
+import PageThree from './components/Pages/PageThree';
+import PageFour from './components/Pages/PageFour';
+import PageFive from './components/Pages/PageFive';
 
 import './styles/App.css';
 import './styles/Pages.css';
@@ -12,8 +15,6 @@ export const FORM_KEY = 'medicalData';
 import { z } from 'zod';
 import { schemaMap } from './lib/schema';
 import { useLocation } from 'react-router-dom';
-import PageThree from './components/Pages/PageThree';
-import PageFour from './components/Pages/PageFour';
 
 function App() {
   const location = useLocation();
@@ -63,6 +64,7 @@ function App() {
               <Route path="/details" element={<PageTwoPointFive />} />
               <Route path="/other" element={<PageThree />} />
               <Route path="/appointment" element={<PageFour />} />
+              <Route path="/success" element={<PageFive />} />
             </Route>
           </Routes>
         </FormProvider>

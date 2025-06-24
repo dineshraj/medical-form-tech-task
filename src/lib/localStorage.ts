@@ -13,8 +13,13 @@ export const updateLocalStorage = (newData: object) => {
 };
 
 export const getFromLocalStorage = (value: string) => {
+  // console.log('Form', FORM_KEY);
+
   const existingData = localStorage.getItem(FORM_KEY) || '{}';
   const existingDataAsObject = JSON.parse(existingData);
+  // console.log("🚀 ~ getFromLocalStorage ~ existingData:", existingData)
+  // console.log("🚀 ~ getFromLocalStorage ~ existingDataAsObject:", existingDataAsObject)
 
+  // console.log("🚀 ~ getFromLocalStorage ~ existingDataAsObject[value]:", existingDataAsObject[value])
   return existingDataAsObject[value];
 };

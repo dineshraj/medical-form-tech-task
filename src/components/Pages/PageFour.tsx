@@ -21,15 +21,12 @@ const PageFour = () => {
   const { control, handleSubmit, register } = useFormContext<PageFourT>();
   const navigate = useNavigate();
   const { errors, isValid: formValid } = useFormState({ control });
-  console.log('🚀 ~ PageFour ~ errors:', errors);
-  console.log('🚀 ~ PageFour ~ formValid:', formValid);
+  // TODO
+  // console.log('🚀 ~ PageFour ~ errors:', errors);
+  // console.log('🚀 ~ PageFour ~ formValid:', formValid);
 
   const onSubmit: SubmitHandler<PageFourT> = async (data: PageFourT) => {
     const result = PageFourSchema.safeParse(data);
-    console.log(
-      '🚀 ~ constonSubmit:SubmitHandler<PageFourT>= ~ result:',
-      result
-    );
 
     if (result.success) {
       updateLocalStorage(data);
