@@ -5,9 +5,11 @@ import '../styles/NextButton.css';
 interface NextButtonProps {
   disabled: boolean;
   page: number;
+  text?: string;
 }
 
-const NextButton = ({ disabled, page }: NextButtonProps) => {
+
+const NextButton = ({ disabled, page, text }: NextButtonProps) => {
   return (
     <button
       className="next-button"
@@ -15,7 +17,7 @@ const NextButton = ({ disabled, page }: NextButtonProps) => {
       type="submit"
       data-testid={`next-button-page-${page}`}
     >
-      {next}
+      {text || next}
     </button>
   );
 };

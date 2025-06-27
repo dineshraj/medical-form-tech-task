@@ -1,0 +1,14 @@
+.appointment-info-list {
+  list-style: none;
+  padding-left: 0;
+  border: 1px solid gray;
+  padding: 15px;
+  border-radius: 15px;
+  font-size: 18px;
+  letter-spacing: 1px;
+  color: gray;
+}
+
+.appointment-info-list li {
+  padding: 10px 15px;
+}

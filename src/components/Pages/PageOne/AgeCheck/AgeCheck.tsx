@@ -1,22 +1,11 @@
-import {
-  // FieldErrors,
-  FieldValues,
-  UseFormRegisterReturn
-} from 'react-hook-form';
+import { FieldValues, UseFormRegisterReturn } from 'react-hook-form';
 import { pageOne } from '../../../../lib/lang';
 import '../../../../styles/Pages/PageOne/AgeCheck.css';
-// import { ChangeEventHandler } from 'react';
 
 interface AgeCheckProps {
   registered: UseFormRegisterReturn<'ageCheck'>;
   error?: FieldValues;
 }
-
-// interface AgleCheckProps {
-//   onChange: ChangeEventHandler<HTMLInputElement>;
-//   value: string;
-//   error?: FieldValues;
-// }
 
 const AgeCheck = ({ registered, error }: AgeCheckProps) => {
   // const AgeCheck = ({ onChange, error }: AgeCheckProps) => {

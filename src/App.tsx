@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import Pages from './components/Pages';
+import { Outlet as Pages } from 'react-router-dom';
 import PageOne from './components/Pages/PageOne';
 import PageTwo from './components/Pages/PageTwo';
 import PageTwoPointFive from './components/Pages/PageTwoPointFive';
@@ -53,6 +53,7 @@ function App() {
     resolver
   });
 
+  // TODO the root dir ('/') should check for a page value in the local storage and route the user to the correct page
   return (
     <div className="container">
       <div className="page-container" data-testid="page-container">

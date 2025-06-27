@@ -21,7 +21,7 @@ const PageFour = () => {
   const { control, handleSubmit, register } = useFormContext<PageFourT>();
   const navigate = useNavigate();
   const { errors, isValid: formValid } = useFormState({ control });
-  // TODO
+  // TODO fix time not being valid if before present time - allow any time
   // console.log('🚀 ~ PageFour ~ errors:', errors);
   // console.log('🚀 ~ PageFour ~ formValid:', formValid);
 
