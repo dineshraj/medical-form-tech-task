@@ -204,7 +204,7 @@ describe('PageTwoPointFive', () => {
       expect(nextButton).not.toBeDisabled();
     });
 
-    it.skip('calls navigate() with the right url if at the end of the symptom list', async () => {
+    it('calls navigate() with the right url if at the end of the symptom list', async () => {
       // const user = userEvent.setup();
       // renderApp();
       // await fillInFormCorrectly(user);

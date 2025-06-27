@@ -21,6 +21,8 @@ function App() {
   const currentPath = location.pathname;
   const currentSchema: z.ZodTypeAny = schemaMap[currentPath] ?? z.object({});
 
+  // TODO use vite-plugin-svgr instead of React components
+
   const resolver = useCallback(
     // TODO how do make this not an 'any''
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

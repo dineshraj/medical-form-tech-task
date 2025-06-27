@@ -8,7 +8,7 @@ interface CallTypeProps {
   registered: UseFormRegisterReturn<'callType'>;
 }
 
-const CallType = ({registered} : CallTypeProps) => {
+const CallType = ({ registered }: CallTypeProps) => {
   return (
     <div className="call-type" data-testid="call-type">
       <div className="title call-type__title" data-testid="title">
